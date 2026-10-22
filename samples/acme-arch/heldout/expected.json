@@ -1,0 +1,13 @@
+{
+  "pack": "acme-architecture",
+  "note": "Held-out ground truth. Do not look at these documents while tuning questions or thresholds.",
+  "expected": [
+    {"rule": "ARCH-01", "file": "adr/adr-004-reporting-service.md", "verdict": "gap"},
+    {"rule": "ARCH-02", "file": "adr/adr-004-reporting-service.md", "verdict": "compliant"},
+    {"rule": "ARCH-04", "file": "adr/adr-004-reporting-service.md", "verdict": "compliant"},
+    {"rule": "ARCH-05", "file": "adr/adr-004-reporting-service.md", "verdict": "compliant"},
+    {"rule": "ARCH-03", "file": "config/payment-service/application.properties", "verdict": "gap"},
+    {"rule": "ARCH-06", "file": "config/payment-service/application.properties", "verdict": "compliant"},
+    {"rule": "ARCH-07", "file": "docker/payment-service.Dockerfile", "verdict": "gap"}
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "pack": "acme-architecture",
+  "note": "Same planted gaps as the visible ADRs, as Word and PDF.",
+  "expected": [
+    {
+      "rule": "ARCH-01",
+      "file": "adr-002-billing-invoices.docx",
+      "verdict": "gap"
+    },
+    {
+      "rule": "ARCH-02",
+      "file": "adr-002-billing-invoices.docx",
+      "verdict": "gap"
+    },
+    {
+      "rule": "ARCH-04",
+      "file": "adr-002-billing-invoices.docx",
+      "verdict": "compliant"
+    },
+    {
+      "rule": "ARCH-05",
+      "file": "adr-002-billing-invoices.docx",
+      "verdict": "gap"
+    },
+    {
+      "rule": "ARCH-01",
+      "file": "adr-003-notification-service.pdf",
+      "verdict": "compliant"
+    },
+    {
+      "rule": "ARCH-02",
+      "file": "adr-003-notification-service.pdf",
+      "verdict": "not_applicable"
+    },
+    {
+      "rule": "ARCH-04",
+      "file": "adr-003-notification-service.pdf",
+      "verdict": "gap"
+    },
+    {
+      "rule": "ARCH-05",
+      "file": "adr-003-notification-service.pdf",
+      "verdict": "gap",
+      "note": "Same relabel as the Markdown original (see visible/expected.json)."
+    }
+  ]
+}

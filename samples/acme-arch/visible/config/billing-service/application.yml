@@ -1,0 +1,18 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: billing-service
+  datasource:
+    url: jdbc:postgresql://10.20.30.40:5432/billing
+    username: billing_app
+    password: S3cretBilling!2026
+tax:
+  client:
+    base-url: https://tax.example-provider.com
+    api-key: tk_live_9f8e7d6c5b4a3f2e1d0c
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info

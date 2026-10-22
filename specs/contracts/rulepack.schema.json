@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/shodhaka/rulepack.schema.json",
+  "title": "Rule pack",
+  "description": "One standard (regulation, certification or company rules) as checkable rules. Every rule is checked by exactly one of: a Decider choice question, or a deterministic code check.",
+  "type": "object",
+  "required": [
+    "pack",
+    "version",
+    "title",
+    "rules"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "pack": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,63}$"
+    },
+    "version": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/rule"
+      }
+    }
+  },
+  "$defs": {
+    "rule": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "severity",
+        "applies_to",
+        "requirement"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]*-[0-9]{2,}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "severity": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "applies_to": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "adr",
+              "design-doc",
+              "policy",
+              "config",
+              "dockerfile",
+              "register"
+            ]
+          }
+        },
+        "requirement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fix_hint": {
+          "type": "string"
+        },
+        "decider": {
+          "$ref": "#/$defs/deciderCheck"
+        },
+        "deterministic": {
+          "$ref": "#/$defs/deterministicCheck"
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "decider"
+          ],
+          "not": {
+            "required": [
+              "deterministic"
+            ]
+          }
+        },
+        {
+          "required": [
+            "deterministic"
+          ],
+          "not": {
+            "required": [
+              "decider"
+            ]
+          }
+        }
+      ]
+    },
+    "deciderCheck": {
+      "type": "object",
+      "required": [
+        "question",
+        "options"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "options": {
+          "type": "object",
+          "minProperties": 2,
+          "maxProperties": 8,
+          "propertyNames": {
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "verdict",
+              "description"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "verdict": {
+                "enum": [
+                  "compliant",
+                  "gap",
+                  "not_applicable"
+                ]
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Short phrase for the stage-1 relevance question, e.g. 'calls from one service to another'."
+        },
+        "scope": {
+          "enum": [
+            "section",
+            "document"
+          ],
+          "description": "section (default): every section must comply. document: one section that clearly complies covers the rule for the whole document; sections that merely do not mention it are not gaps."
+        }
+      }
+    },
+    "deterministicCheck": {
+      "type": "object",
+      "required": [
+        "check"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "check": {
+          "enum": [
+            "secret_scan",
+            "health_endpoint",
+            "pinned_base_image"
+          ]
+        },
+        "params": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

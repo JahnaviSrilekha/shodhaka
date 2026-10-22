@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shodhaka"
+version = "0.1.0"
+description = "Shodhaka: finds gaps in documents and flows against any rule pack and suggests fixes, with Strands Decider 2B running locally and Amazon Bedrock."
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.10"
+dependencies = ["pyyaml>=6", "jsonschema>=4.20"]
+
+[project.optional-dependencies]
+bedrock = ["strands-agents>=1.61", "boto3>=1.34"]
+docs = ["pypdf>=4.2", "python-docx>=1.1"]
+embed = ["sentence-transformers>=3"]
+ui = ["fastapi>=0.110", "uvicorn>=0.29", "python-multipart>=0.0.9"]
+dev = ["pytest>=8", "reportlab>=4", "httpx>=0.27"]
+
+[project.scripts]
+gapanalyzer = "gapanalyzer.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

@@ -1,0 +1,14 @@
+__pycache__/
+*.egg-info/
+.venv/
+out/
+.pytest_cache/
+data/
+ui/node_modules/
+ui/dist/
+.DS_Store
+.idea/
+_to_delete/
+*.pyc
+.env
+.env.*

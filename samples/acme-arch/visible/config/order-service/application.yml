@@ -1,0 +1,18 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:postgresql://order-db.acme.internal:5432/orders
+    username: order_app
+    password: ${vault:secret/order/db#password}
+  rabbitmq:
+    host: mq.acme.internal
+    username: order_app
+    password: ${RABBITMQ_PASSWORD}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus

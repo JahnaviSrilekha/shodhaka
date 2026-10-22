@@ -1,0 +1,209 @@
+# ISO/IEC 27001:2022 core controls
+# Simplified starting point, not legal or certification advice. Rule references point to the source text.
+pack: iso27001
+version: '0.1'
+title: ISO/IEC 27001:2022 core controls
+description: 'A selection of ISO/IEC 27001:2022 requirements and Annex A controls, checked against information security
+  policies and procedures. A simplified starting point, not a certification audit: verify every rule against the
+  standard.'
+rules:
+- id: ISO-01
+  title: Information security policy approved
+  severity: high
+  applies_to:
+  - adr
+  requirement: An information security policy and topic-specific policies are defined, approved by management, communicated
+    and reviewed at planned intervals (clause 5.2, A.5.1).
+  decider:
+    topic: the information security policy, who approves it and how often it is reviewed
+    question: 'How does this text handle: information security policy approved?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: the policy is approved by management, communicated to staff and reviewed at planned intervals
+      falls-short:
+        verdict: gap
+        description: the policy has no management approval, is not communicated, or is never reviewed
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Have management approve the policy, publish it to staff and set a review interval.
+- id: ISO-02
+  title: Information security risk assessment
+  severity: high
+  applies_to:
+  - adr
+  requirement: A defined information security risk assessment process identifies, analyses and evaluates risks with
+    consistent criteria, and is repeated at planned intervals (clause 6.1.2, 8.2).
+  decider:
+    topic: how information security risks are identified, assessed or treated
+    question: 'How does this text handle: information security risk assessment?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: risks are assessed with defined criteria and the assessment is repeated at planned intervals
+      falls-short:
+        verdict: gap
+        description: risks are not assessed, criteria are undefined, or assessments are not repeated
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Define risk criteria (likelihood, impact, acceptance) and repeat the risk assessment at planned intervals
+    and after major changes.
+- id: ISO-03
+  title: Inventory of information and assets
+  severity: medium
+  applies_to:
+  - adr
+  requirement: An inventory of information and other associated assets, including owners, is developed and maintained
+    (A.5.9).
+  decider:
+    topic: an inventory of assets or information and who owns them
+    question: 'How does this text handle: inventory of information and assets?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: an asset inventory with named owners is maintained
+      falls-short:
+        verdict: gap
+        description: there is no asset inventory, or assets have no owners
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Maintain an asset inventory and assign an owner to every asset.
+- id: ISO-04
+  title: Access control and access rights reviewed
+  severity: high
+  applies_to:
+  - adr
+  requirement: Access to information is controlled based on business and security requirements, and access rights
+    are provisioned, reviewed regularly and removed when no longer needed (A.5.15, A.5.18).
+  decider:
+    topic: who gets access to systems or information, granting, reviewing or removing access rights
+    question: 'How does this text handle: access control and access rights reviewed?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: access follows defined rules and rights are reviewed regularly and revoked when no longer needed
+      falls-short:
+        verdict: gap
+        description: access is granted without rules, is never reviewed, or is not removed for leavers
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Define an access control policy, review access rights at least quarterly for critical systems and revoke
+    them on role change or exit.
+- id: ISO-05
+  title: Incident management planned and practised
+  severity: high
+  applies_to:
+  - adr
+  requirement: Information security incident management is planned with roles and procedures, and incidents are
+    assessed, responded to and learned from (A.5.24-A.5.27).
+  decider:
+    topic: how security incidents are reported, handled or reviewed afterwards
+    question: 'How does this text handle: incident management planned and practised?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: roles and procedures exist to report, assess, respond to and learn from incidents
+      falls-short:
+        verdict: gap
+        description: there are no incident roles or procedures, or no follow-up after incidents
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Define incident roles, a reporting channel, a response procedure and a post-incident review.
+- id: ISO-06
+  title: ICT readiness for business continuity
+  severity: medium
+  applies_to:
+  - adr
+  requirement: ICT readiness is planned, implemented, maintained and tested based on business continuity objectives
+    (A.5.30).
+  decider:
+    topic: business continuity, disaster recovery or availability of ICT services
+    question: 'How does this text handle: ict readiness for business continuity?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: continuity objectives exist and ICT recovery is planned and tested
+      falls-short:
+        verdict: gap
+        description: no continuity objectives, or ICT recovery is never tested
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Set continuity objectives for critical services and test ICT recovery against them.
+- id: ISO-07
+  title: Backups maintained and tested
+  severity: medium
+  applies_to:
+  - adr
+  requirement: Backup copies of information, software and systems are maintained and regularly tested according
+    to an agreed backup policy (A.8.13).
+  decider:
+    topic: backups and restoring from backups
+    question: 'How does this text handle: backups maintained and tested?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: backups follow a policy and restores are regularly tested
+      falls-short:
+        verdict: gap
+        description: there is no backup policy, or restores are never tested
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Write a backup policy and test restores regularly.
+- id: ISO-08
+  title: Logging and monitoring
+  severity: medium
+  applies_to:
+  - adr
+  requirement: Logs that record activities, exceptions, faults and other relevant events are produced, stored, protected
+    and analysed (A.8.15).
+  decider:
+    topic: logging, audit trails, monitoring or log retention
+    question: 'How does this text handle: logging and monitoring?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: relevant events are logged, logs are protected and they are analysed
+      falls-short:
+        verdict: gap
+        description: logging is missing, logs are not protected, or nobody reviews them
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Log security-relevant events, protect logs against tampering and review them regularly.
+- id: ISO-09
+  title: Supplier security
+  severity: medium
+  applies_to:
+  - adr
+  requirement: Information security requirements for suppliers are defined and agreed, and supplier services are
+    monitored and reviewed (A.5.19-A.5.22).
+  decider:
+    topic: suppliers, vendors or outsourced services and their security obligations
+    question: 'How does this text handle: supplier security?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: supplier security requirements are agreed in contracts and supplier services are monitored
+      falls-short:
+        verdict: gap
+        description: suppliers are used without agreed security requirements or monitoring
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Add security requirements to supplier contracts and review supplier performance regularly.
