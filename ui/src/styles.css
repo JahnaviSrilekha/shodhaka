@@ -90,13 +90,13 @@ kbd {
 
 /* ---- pages ---- */
 .page { padding: 24px; margin: 0 auto; }
-.page-narrow { max-width: 860px; display: grid; gap: 16px; }
+.page-narrow { max-width: 860px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
 .page-wide { max-width: 1480px; }
 .hero { padding: 8px 0 4px; }
 .hero p { margin: 6px 0 0; max-width: 680px; }
 .card {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 18px 20px; box-shadow: var(--shadow);
+  padding: 18px 20px; box-shadow: var(--shadow); min-width: 0;
 }
 .card-title { margin-bottom: 12px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
 .empty { color: var(--muted); padding: 32px; text-align: center; }
@@ -253,9 +253,10 @@ input[type="range"] { accent-color: var(--primary); width: 100%; }
 .search input { border: 0; padding: 6px 0; background: transparent; }
 .search input:focus { outline: none; }
 .search:focus-within { outline: 2px solid var(--focus); outline-offset: 1px; }
-.finding-list { list-style: none; margin: 0; padding: 0; overflow: auto; display: grid; gap: 4px; align-content: start; }
+.finding-list { list-style: none; margin: 0; padding: 0; overflow: auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; align-content: start; }
+.list-pane, .detail-pane { min-width: 0; }
 .finding-row {
-  display: grid; gap: 4px; width: 100%; padding: 9px 10px; text-align: left; font: inherit; color: var(--text);
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; width: 100%; padding: 9px 10px; text-align: left; font: inherit; color: var(--text);
   background: transparent; border: 1px solid transparent; border-radius: 8px; cursor: pointer;
 }
 .finding-row:hover { background: var(--surface-2); }
@@ -331,7 +332,14 @@ input[type="range"] { accent-color: var(--primary); width: 100%; }
 }
 @media (max-width: 800px) {
   .page { padding: 16px; }
-  .form-grid, .review-layout, .editor-layout { grid-template-columns: 1fr; }
+  .form-grid, .review-layout, .editor-layout { grid-template-columns: minmax(0, 1fr); }
+  /* wide tables scroll sideways inside their card instead of widening the page */
+  .table { display: block; overflow-x: auto; }
+  .table th { white-space: nowrap; }
+  .table td.truncate { white-space: normal; overflow-wrap: anywhere; min-width: 180px; }
+  .card { padding: 14px; }
+  .detail-pane { padding: 16px; }
+  .toolbar-title { min-width: 0; flex-basis: 100%; }
   .list-pane, .side-findings { position: static; max-height: none; }
   .privacy { display: none; }
   .editor-frame { height: 60vh; }
@@ -342,7 +350,7 @@ input[type="range"] { accent-color: var(--primary); width: 100%; }
 .header-left { display: flex; align-items: center; gap: 18px; min-width: 0; }
 .switchers { display: flex; gap: 8px; min-width: 0; }
 .switcher select { padding: 5px 28px 5px 10px; font-size: 13px; font-weight: 550; max-width: 220px; background-color: var(--surface-2); }
-.page-medium { max-width: 1240px; display: grid; gap: 16px; }
+.page-medium { max-width: 1240px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
 .breadcrumbs { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 2px; }
 .breadcrumbs a { color: var(--muted); text-decoration: none; }
 .breadcrumbs a:hover { color: var(--primary); text-decoration: underline; }
@@ -406,12 +414,23 @@ fieldset.field legend { font-weight: 550; padding: 0; margin-bottom: 6px; }
 .problems code { white-space: pre-wrap; }
 
 @media (max-width: 1000px) {
-  .two-col, .two-col.wide-left { grid-template-columns: 1fr; }
+  .two-col, .two-col.wide-left { grid-template-columns: minmax(0, 1fr); }
   .brand-name { display: none; }
 }
 @media (max-width: 800px) {
   .inline-form, .form-grid.three { grid-template-columns: 1fr; }
   .switcher select { max-width: 130px; }
+}
+/* phones: brand and status on the first line, the organization/project switchers full width below */
+@media (max-width: 600px) {
+  .app-header { flex-wrap: wrap; row-gap: 8px; padding: 8px 16px; }
+  .header-left { display: contents; }
+  .header-status { white-space: nowrap; }
+  .switchers { order: 3; flex: 1 1 100%; }
+  .switcher { flex: 1; min-width: 0; }
+  .switcher select { max-width: none; }
+  .toasts { left: 16px; right: 16px; bottom: 16px; }
+  .toast { max-width: none; }
 }
 
 .hint-text { margin: -4px 0 4px; padding: 0 2px; }
