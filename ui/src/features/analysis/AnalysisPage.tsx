@@ -12,6 +12,7 @@ import { useToast } from "../../hooks/useToast";
 import { FindingDetail } from "./FindingDetail";
 import { FindingList } from "./FindingList";
 import { RemovalsPanel } from "./RemovalsPanel";
+import { UsagePanel } from "./UsagePanel";
 import { filterReducer, initialFilter } from "./filters";
 
 export function AnalysisPage({ scope, id, findingId }: { scope: Scope; id: string; findingId?: string }) {
@@ -111,6 +112,7 @@ export function AnalysisPage({ scope, id, findingId }: { scope: Scope; id: strin
         </section>
       )}
       {analysis.removals && analysis.status !== "queued" && <RemovalsPanel removals={analysis.removals} />}
+      {analysis.usage && <UsagePanel usage={analysis.usage} bedrockOn={analysis.bedrock} />}
       {analysis.status === "failed" && (
         <section className="card error-card"><strong>The analysis stopped.</strong> {analysis.error}</section>
       )}

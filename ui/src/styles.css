@@ -450,3 +450,12 @@ fieldset.field legend { font-weight: 550; padding: 0; margin-bottom: 6px; }
 .removal-instruction { background: var(--primary-soft); color: var(--primary); }
 .removals-none { margin: 0 0 12px; }
 .side-findings .removals { margin-bottom: 4px; padding: 10px; box-shadow: none; }
+
+/* Calls and cost */
+.usage-card { margin-top: 12px; }
+.usage-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.usage-item { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border: 1px solid var(--border, #e4e3df); border-radius: 8px; }
+.usage-item strong { font-size: 1.05rem; }
+.usage-cost { font-variant-numeric: tabular-nums; font-weight: 600; margin-top: 4px; }
+.usage-total { background: var(--surface-2, rgba(127,127,127,0.06)); }
+.usage-summary { margin: 0 0 8px; }

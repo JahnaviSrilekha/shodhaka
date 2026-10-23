@@ -42,7 +42,7 @@ export function ReviewPanel({ finding, review, onReview, onUndo }: Props) {
         <label className="field">
           <span>
             Suggested fix
-            <small className="muted"> · {!finding.suggested_fix ? "the rule has no fix hint: write one" : finding.fix_source === "bedrock" ? "drafted by Bedrock from a redacted snippet" : "from the rule's fix hint"}{fixEdited ? " · edited by you" : ""}</small>
+            <small className="muted"> · {!finding.suggested_fix ? "the rule has no fix hint: write one" : finding.fix_source === "bedrock" ? "drafted by Bedrock from a redacted snippet" : finding.fix_source?.startsWith("rule-hint (") ? `from the rule's fix hint: ${finding.fix_source.slice(11, -1)}` : "from the rule's fix hint"}{fixEdited ? " · edited by you" : ""}</small>
           </span>
           <textarea rows={4} value={fix} onChange={(e) => setFix(e.target.value)} placeholder="Describe the change the document needs" />
         </label>

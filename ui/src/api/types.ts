@@ -60,7 +60,7 @@ export interface Report {
   design_set?: string[];
   summary: Record<Status, number>;
   decider: { calls?: number; latency_ms_p50?: number; latency_ms_p95?: number };
-  egress: { bedrock_calls: number; bytes_sent: number };
+  egress: { bedrock_calls: number; bytes_sent: number; blocked?: number; guardrail?: string | null; guardrail_interventions?: number };
   findings: Finding[];
   rechecks?: { document: string; at: string }[];
 }
@@ -111,16 +111,33 @@ export interface Removal {
   on_edit?: boolean;
 }
 
+/** Calls and estimated cost (analysis/costs.py). Decider runs locally, so its cost is always 0. */
+export interface UsageTotals {
+  decider: { requests: number; questions: number; input_tokens: number; usd: number };
+  bedrock: { model?: string | null; calls: number; blocked_by_egress_guard: number; input_tokens: number; output_tokens: number; usd: number };
+  guardrail: { id?: string | null; text_units: number; interventions: number; usd: number };
+  usd: number;
+  runs: number;
+}
+
+export interface Usage {
+  runs: (Omit<UsageTotals, "runs"> & { kind: "analysis" | "re-check"; at: string })[];
+  total: UsageTotals;
+  prices: { model_per_1m_tokens: [number, number]; guardrail_per_1000_text_units: number };
+}
+
 export interface Analysis extends AnalysisMeta {
   report: Report | null;
   removals?: Removal[];
   reviews: Record<string, Review>;
+  usage?: Usage | null;
 }
 
 export interface AnalysisListItem extends AnalysisMeta {
   summary: Record<Status, number> | null;
   findings: number;
   reviewed: number;
+  usage?: UsageTotals | null;
 }
 
 export interface RuleSummary {

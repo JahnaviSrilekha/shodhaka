@@ -3,6 +3,7 @@ import type { Health } from "../../api/types";
 import { Breadcrumbs } from "../../components/Breadcrumbs";
 import { StatusBadge, SeverityTag } from "../../components/StatusBadge";
 import { STATUS_ORDER } from "../../domain/review";
+import { sumUsage, usd } from "../../domain/usage";
 import { href } from "../../hooks/useHashRoute";
 import { useLoad } from "../../hooks/useLoad";
 import { useToast } from "../../hooks/useToast";
@@ -45,9 +46,18 @@ export function ProjectPage({ scope, health }: { scope: Scope; health: Health | 
 
           <section className="card">
             <h2 className="card-title">Analyses in this project</h2>
+            {analyses.data?.length ? (() => {
+              const s = sumUsage(analyses.data.map((a) => a.usage));
+              return (
+                <p className="muted small usage-summary">
+                  Project total: {s.deciderRequests.toLocaleString()} Decider requests (local, $0) · {s.bedrockCalls} Bedrock calls
+                  {s.guardrailUnits ? ` · ${s.guardrailUnits} guardrail text units, ${s.guardrailInterventions} interventions` : ""} · <strong>{usd(s.usd)}</strong> estimated
+                </p>
+              );
+            })() : null}
             {!analyses.data?.length ? <p className="muted">None yet.</p> : (
               <table className="table">
-                <thead><tr><th>Started</th><th>Documents</th><th>Findings</th><th>Reviewed</th><th /></tr></thead>
+                <thead><tr><th>Started</th><th>Documents</th><th>Findings</th><th>Reviewed</th><th>Decider + Bedrock calls · cost</th><th /></tr></thead>
                 <tbody>
                   {analyses.data.map((a) => (
                     <tr key={a.id}>
@@ -61,6 +71,9 @@ export function ProjectPage({ scope, health }: { scope: Scope; health: Health | 
                         ) : <span className="muted">{a.status}</span>}
                       </td>
                       <td>{a.findings ? `${a.reviewed}/${a.findings}` : "–"}</td>
+                      <td className="small" title={a.usage ? `Decider ${a.usage.decider.requests} · Bedrock ${a.usage.bedrock.calls} · guardrail ${a.usage.guardrail.text_units} text units` : "recorded for analyses run from now on"}>
+                        {a.usage ? `${a.usage.decider.requests} + ${a.usage.bedrock.calls} · ${usd(a.usage.usd)}` : "–"}
+                      </td>
                       <td><a className="button small" href={href({ page: "analysis", ...scope, id: a.id })}>Open</a></td>
                     </tr>
                   ))}

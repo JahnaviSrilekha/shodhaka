@@ -20,6 +20,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from shodhaka import decider as d
+from shodhaka.analysis.costs import text_units
 from shodhaka.decider import Decider
 from shodhaka.documents.redact import Redactor
 from shodhaka.rules.pack import Rule, RulePack
@@ -62,6 +63,9 @@ class EgressLog:
     bytes_sent: int = 0
     blocked: int = 0
     guardrail_interventions: int = 0
+    input_tokens: int = 0
+    output_tokens: int = 0
+    guardrail_text_units: int = 0
     entries: list[dict] = field(default_factory=list)
 
 
@@ -167,7 +171,14 @@ class FixWriter:
         prompt = (f"Rule {rule.id}: {rule.title}\nRequirement: {rule.requirement}\n"
                   f"Problem found: {finding.get('reason', '')}\nEvidence (redacted): {redacted}\n"
                   f"Hint from the rule owner: {rule.fix_hint}")
+        calls_before = self.log.calls
         result = agent(prompt)
+        usage = getattr(getattr(result, "metrics", None), "accumulated_usage", None) or {}
+        self.log.input_tokens += int(usage.get("inputTokens", 0))
+        self.log.output_tokens += int(usage.get("outputTokens", 0))
+        if self.guardrail_id:  # the guardrail reads the latest prompt on every call and the reply once
+            calls = max(1, self.log.calls - calls_before)
+            self.log.guardrail_text_units += calls * text_units(len(prompt)) + text_units(len(str(result)))
         if getattr(result, "stop_reason", None) == "guardrail_intervened" or BLOCKED in str(result):
             self.log.guardrail_interventions += 1
             raise GuardrailBlocked(finding["id"])
@@ -192,5 +203,8 @@ def add_fixes(report: dict[str, Any], pack: RulePack, writer: FixWriter | None) 
     if writer is not None:
         report["egress"] = {"bedrock_calls": writer.log.calls, "bytes_sent": writer.log.bytes_sent,
                             "blocked": writer.log.blocked, "guardrail": writer.guardrail_id,
-                            "guardrail_interventions": writer.log.guardrail_interventions, "log": writer.log.entries}
+                            "guardrail_interventions": writer.log.guardrail_interventions,
+                            "input_tokens": writer.log.input_tokens, "output_tokens": writer.log.output_tokens,
+                            "guardrail_text_units": writer.log.guardrail_text_units, "model": writer.model_id,
+                            "log": writer.log.entries}
     return report

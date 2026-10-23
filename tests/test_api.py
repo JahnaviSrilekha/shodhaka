@@ -68,6 +68,8 @@ def test_upload_analyse_review_export(client):
     analysis_id = upload(client, adr, VISIBLE / "config" / "billing-service" / "application.yml")
     body = wait(client, analysis_id)
     assert body["status"] == "done", body["error"]
+    usage = body["usage"]["total"]
+    assert usage["decider"]["requests"] > 0 and usage["bedrock"]["calls"] == 0 and usage["usd"] == 0
     findings = {f["id"]: f for f in body["report"]["findings"]}
     gap = findings["ARCH-02:adr-002-billing-invoices.md"]
     assert gap["status"] == "gap" and gap["evidence"] and gap["suggested_fix"]

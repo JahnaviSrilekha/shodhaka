@@ -29,6 +29,7 @@ from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, Res
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
+from shodhaka.analysis.costs import add_run, run_usage
 from shodhaka.analysis.engine import DEFAULT_THRESHOLD, DESIGN_SET, MODES, analyze
 from shodhaka.analysis.fixes import FixWriter, add_fixes
 from shodhaka.analysis.recommend import recommend
@@ -204,6 +205,8 @@ def create_app(workspace: str | Path, pack_dir: str | Path,
                                      progress={"done": done, "total": total, "current": path}))
                 writer = FixWriter(decider, **bedrock) if (bedrock and meta.get("bedrock")) else None
                 result = add_fixes(result, pack, writer)
+                stats = decider.stats.as_dict() if hasattr(decider, "stats") else result.get("decider", {})
+                run = run_usage(stats, result.get("egress") if writer else None, bedrock.get("model_id") if writer else None)
                 for finding in result["findings"]:
                     finding["rule_source"] = sources.get(finding["rule_id"])
                 with store.lock:
@@ -213,6 +216,8 @@ def create_app(workspace: str | Path, pack_dir: str | Path,
                     elif only is not None and report is not None:  # design set re-checked as a whole
                         result["rechecks"] = report.get("rechecks", []) + [{"document": only, "at": _now(), "decider": result.get("decider", {})}]
                     store.write(analysis_id, "report.json", result)
+                    store.write(analysis_id, "usage.json", add_run(store.read(analysis_id, "usage.json"), run,
+                                                                   "re-check" if only else "analysis", _now()))
                     if only is not None:  # the text changed: earlier decisions on it must be looked at again
                         reviews = store.read(analysis_id, "reviews.json", {})
                         for review in reviews.values():
@@ -438,8 +443,10 @@ def create_app(workspace: str | Path, pack_dir: str | Path,
                 meta = store.read(folder.name, "meta.json")
                 report = store.read(folder.name, "report.json")
                 reviews = store.read(folder.name, "reviews.json", {})
+                usage = store.read(folder.name, "usage.json")
                 items.append({**_public(meta), "summary": report["summary"] if report else None,
-                              "findings": len(report["findings"]) if report else 0, "reviewed": len(reviews)})
+                              "findings": len(report["findings"]) if report else 0, "reviewed": len(reviews),
+                              "usage": usage["total"] if usage else None})
         return sorted(items, key=lambda m: m["created_at"], reverse=True)
 
     @project_api.post("/analyses", status_code=201)
@@ -513,7 +520,8 @@ def create_app(workspace: str | Path, pack_dir: str | Path,
         meta = store.read(analysis_id, "meta.json")
         return {**_public(meta), "report": store.read(analysis_id, "report.json"),
                 "removals": store.read(analysis_id, "removals.json", []),
-                "reviews": store.read(analysis_id, "reviews.json", {})}
+                "reviews": store.read(analysis_id, "reviews.json", {}),
+                "usage": store.read(analysis_id, "usage.json")}
 
     @project_api.get("/analyses/{analysis_id}/documents/{document:path}")
     def get_document(org_id: str, project_id: str, analysis_id: str, document: str) -> dict[str, Any]:

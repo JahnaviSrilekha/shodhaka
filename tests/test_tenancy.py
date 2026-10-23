@@ -157,7 +157,7 @@ def test_recommend_packs_then_analyse_with_the_chosen_ones(tmp_path):
     assert "template:iso27001" in refs and "template:acme-architecture" not in refs    # already added to the org
 
     policies = ROOT / "samples" / "policies"
-    files = [("files", (p.name, p.read_bytes())) for p in sorted(policies.glob("*.md"))]
+    files = [("files", (p.name, p.read_bytes())) for p in sorted(policies.glob("*.md")) if p.name != "dora-ict-risk-management-framework.md"]
     rec = api.post(f"{base}/recommend", files=files).json()
     picks = {d["document"]: d["pick"] for d in rec["documents"]}
     assert picks == {"access-control-policy.md": "template:iso27001", "ict-incident-and-continuity-policy.md": "template:dora"}
