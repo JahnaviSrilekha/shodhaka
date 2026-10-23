@@ -57,6 +57,17 @@ shodhaka run --pack rule-packs/acme-arch.yaml --docs <folder> --out out/design -
 shodhaka run --pack rule-packs/acme-arch.yaml --docs samples/acme-arch/visible --out out/visible-bedrock --bedrock
 ```
 
+With a guardrail created in the Bedrock console, every fix call also goes through it:
+
+```bash
+shodhaka run ... --bedrock --guardrail-id <guardrail id> --guardrail-version 1
+shodhaka serve --bedrock --guardrail-id <guardrail id> --guardrail-version 1
+# or once per terminal: export SHODHAKA_GUARDRAIL_ID=<id> SHODHAKA_GUARDRAIL_VERSION=1
+```
+
+If the guardrail blocks a call, that finding gets the rule's fix hint instead and the report's
+`egress.guardrail_interventions` counts it.
+
 `shodhaka run` does not clean documents, so the evaluation sets (including the planted injection in
 `adr-005`) are scored as they are.
 

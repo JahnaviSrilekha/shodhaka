@@ -18,7 +18,7 @@ import sys
 from pathlib import Path
 
 from shodhaka.analysis.engine import DEFAULT_THRESHOLD, analyze
-from shodhaka.analysis.fixes import DEFAULT_MODEL, DEFAULT_REGION, FixWriter, add_fixes
+from shodhaka.analysis.fixes import DEFAULT_MODEL, DEFAULT_REGION, GUARDRAIL_ID, GUARDRAIL_VERSION, FixWriter, add_fixes
 from shodhaka.analysis.report import write_html, write_json
 from shodhaka.analysis.retrieval import METHODS, make_ranker
 from shodhaka.decider import DEFAULT_URL, DeciderUnavailable, HttpDecider
@@ -78,7 +78,7 @@ def cmd_run(args: argparse.Namespace) -> int:
     ranker = make_ranker(args.retrieval)
     report = analyze(pack, documents, decider, threshold=args.threshold, strategy=args.strategy,
                      ranker=ranker, top_k=args.top_k, mode="design-set" if args.design_set else "per-document")
-    writer = FixWriter(decider, args.model, args.region) if args.bedrock else None
+    writer = FixWriter(decider, args.model, args.region, args.guardrail_id, args.guardrail_version) if args.bedrock else None
     report = add_fixes(report, pack, writer)
     for finding in report["findings"]:
         if sources:
@@ -263,7 +263,8 @@ def cmd_serve(args: argparse.Namespace) -> int:
     if not (ui_dist / "index.html").exists():
         print(f"no built UI in {ui_dist}: run `cd ui && npm install && npm run build`, "
               f"or use `npm run dev` (http://127.0.0.1:5173) during development", file=sys.stderr)
-    bedrock = {"model_id": args.model, "region": args.region} if args.bedrock else None
+    bedrock = ({"model_id": args.model, "region": args.region, "guardrail_id": args.guardrail_id,
+                "guardrail_version": args.guardrail_version} if args.bedrock else None)
     app = create_app(args.workspace, args.pack_dir, lambda: HttpDecider(args.decider_url),
                      threshold=args.threshold, bedrock=bedrock, ui_dist=ui_dist)
     print(f"Shodhaka UI on http://{args.host}:{args.port}", file=sys.stderr)
@@ -299,6 +300,9 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("--bedrock", action="store_true", help="draft fixes with Bedrock (default: offline, rule hints)")
     r.add_argument("--model", default=DEFAULT_MODEL)
     r.add_argument("--region", default=DEFAULT_REGION)
+    r.add_argument("--guardrail-id", default=GUARDRAIL_ID,
+                    help="Bedrock guardrail applied to every fix call (or set SHODHAKA_GUARDRAIL_ID)")
+    r.add_argument("--guardrail-version", default=GUARDRAIL_VERSION, help="guardrail version, e.g. 1 or DRAFT")
     r.set_defaults(func=cmd_run)
 
     e = sub.add_parser("eval", help="score a report against expected.json")
@@ -369,6 +373,9 @@ def main(argv: list[str] | None = None) -> int:
     sv.add_argument("--bedrock", action="store_true", help="offer Bedrock-drafted fixes in the upload form")
     sv.add_argument("--model", default=DEFAULT_MODEL)
     sv.add_argument("--region", default=DEFAULT_REGION)
+    sv.add_argument("--guardrail-id", default=GUARDRAIL_ID,
+                    help="Bedrock guardrail applied to every fix call (or set SHODHAKA_GUARDRAIL_ID)")
+    sv.add_argument("--guardrail-version", default=GUARDRAIL_VERSION, help="guardrail version, e.g. 1 or DRAFT")
     sv.set_defaults(func=cmd_serve)
 
     args = parser.parse_args(argv)

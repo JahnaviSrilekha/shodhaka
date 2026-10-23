@@ -6,12 +6,16 @@
   * FixGuard (before_tool_call on submit_fix): Decider checks the proposed fix actually
     resolves the gap; if not, the model gets Guide feedback and tries again (max 2 times).
 
+  * Bedrock Guardrail (optional, --guardrail-id): applied by Bedrock itself to every fix call, on top
+    of the two guards above. If it intervenes, the rule's own fix_hint is used instead.
+
 Without Bedrock (offline mode) the rule's own fix_hint is used and nothing leaves the machine.
 """
 
 from __future__ import annotations
 
 import json
+import os
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -22,6 +26,13 @@ from shodhaka.rules.pack import Rule, RulePack
 
 DEFAULT_MODEL = "eu.amazon.nova-lite-v1:0"
 DEFAULT_REGION = "eu-central-1"
+GUARDRAIL_ID = os.environ.get("SHODHAKA_GUARDRAIL_ID")
+GUARDRAIL_VERSION = os.environ.get("SHODHAKA_GUARDRAIL_VERSION", "DRAFT")
+BLOCKED = "[blocked by the Bedrock guardrail]"
+
+
+class GuardrailBlocked(RuntimeError):
+    """The Bedrock guardrail intervened on a fix call."""
 
 SYSTEM_PROMPT = (
     "You are a senior software architect. You receive one architecture-rule gap with a short, "
@@ -50,6 +61,7 @@ class EgressLog:
     calls: int = 0
     bytes_sent: int = 0
     blocked: int = 0
+    guardrail_interventions: int = 0
     entries: list[dict] = field(default_factory=list)
 
 
@@ -113,8 +125,10 @@ def _interventions():
 
 
 class FixWriter:
-    def __init__(self, decider: Decider | None, model_id: str = DEFAULT_MODEL, region: str = DEFAULT_REGION) -> None:
+    def __init__(self, decider: Decider | None, model_id: str = DEFAULT_MODEL, region: str = DEFAULT_REGION,
+                 guardrail_id: str | None = GUARDRAIL_ID, guardrail_version: str = GUARDRAIL_VERSION) -> None:
         self.decider, self.model_id, self.region = decider, model_id, region
+        self.guardrail_id, self.guardrail_version = guardrail_id, guardrail_version
         self.redactor = Redactor()
         self.log = EgressLog()
 
@@ -137,8 +151,13 @@ class FixWriter:
             submitted["fix"] = fix
             return "Fix recorded."
 
+        guardrail = {}
+        if self.guardrail_id:
+            guardrail = {"guardrail_id": self.guardrail_id, "guardrail_version": self.guardrail_version,
+                         "guardrail_trace": "enabled", "guardrail_latest_message": True,
+                         "guardrail_redact_output": True, "guardrail_redact_output_message": BLOCKED}
         agent = Agent(
-            model=BedrockModel(model_id=self.model_id, region_name=self.region, max_tokens=400),
+            model=BedrockModel(model_id=self.model_id, region_name=self.region, max_tokens=400, **guardrail),
             tools=[submit_fix],
             interventions=[EgressGuard(self.redactor, self.decider, self.log, finding["id"]),
                            FixGuard(self.decider, rule, redacted)],
@@ -149,6 +168,9 @@ class FixWriter:
                   f"Problem found: {finding.get('reason', '')}\nEvidence (redacted): {redacted}\n"
                   f"Hint from the rule owner: {rule.fix_hint}")
         result = agent(prompt)
+        if getattr(result, "stop_reason", None) == "guardrail_intervened" or BLOCKED in str(result):
+            self.log.guardrail_interventions += 1
+            raise GuardrailBlocked(finding["id"])
         return self.redactor.restore(submitted.get("fix") or str(result)).strip()
 
 
@@ -163,9 +185,12 @@ def add_fixes(report: dict[str, Any], pack: RulePack, writer: FixWriter | None) 
             continue
         try:
             finding["suggested_fix"], finding["fix_source"] = writer.draft(rule, finding), "bedrock"
+        except GuardrailBlocked:
+            finding["suggested_fix"], finding["fix_source"] = rule.fix_hint, "rule-hint (blocked by Bedrock guardrail)"
         except Exception as exc:  # noqa: BLE001 (a Bedrock failure must not lose the finding)
             finding["suggested_fix"], finding["fix_source"] = rule.fix_hint, f"rule-hint (bedrock failed: {type(exc).__name__})"
     if writer is not None:
         report["egress"] = {"bedrock_calls": writer.log.calls, "bytes_sent": writer.log.bytes_sent,
-                            "blocked": writer.log.blocked, "log": writer.log.entries}
+                            "blocked": writer.log.blocked, "guardrail": writer.guardrail_id,
+                            "guardrail_interventions": writer.log.guardrail_interventions, "log": writer.log.entries}
     return report

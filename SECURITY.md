@@ -35,7 +35,10 @@ Only when fixes are drafted (`--bedrock`), and only for gaps:
 2. The **egress guard** (a Strands `before_model_call` intervention) refuses the call if an original
    value or a sensitive pattern is still in the prompt, or if Decider judges that identifying details
    remain. Every allowed call is logged with its size.
-3. The placeholders are restored locally when the fix comes back.
+3. Optionally, an **Amazon Bedrock Guardrail** (`--guardrail-id`) checks the same call on AWS's side:
+   content filters, denied topics, PII and custom regex. If it intervenes, the rule's own fix hint is
+   used and the report counts the intervention.
+4. The placeholders are restored locally when the fix comes back.
 
 `shodhaka judge` sends each gap's evidence and fix to the judge model, redacted the same way.
 

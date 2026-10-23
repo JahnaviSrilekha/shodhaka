@@ -55,3 +55,44 @@ def test_fix_guard_guides_then_gives_up_after_two_tries(pack):
     guard = FixGuard(ScriptedDecider(lambda s, k, q: ("false", 0.9)), pack.rule("ARCH-01"), "reads orders table")
     event = SimpleNamespace(tool_use={"name": "submit_fix", "input": {"fix": "be careful"}})
     assert [guard.before_tool_call(event).type for _ in range(3)] == ["guide", "guide", "proceed"]
+
+
+def test_bedrock_guardrail_is_passed_on_and_an_intervention_falls_back_to_the_hint(monkeypatch):
+    import strands
+    import strands.models
+    from conftest import ROOT
+
+    from shodhaka.analysis.fixes import FixWriter, add_fixes
+    from shodhaka.rules.pack import load_pack
+
+    seen = {}
+
+    class FakeModel:
+        def __init__(self, **kwargs):
+            seen.update(kwargs)
+
+    class FakeResult:
+        stop_reason = "guardrail_intervened"
+
+        def __str__(self):
+            return "[blocked by the Bedrock guardrail]"
+
+    class FakeAgent:
+        def __init__(self, **kwargs):
+            pass
+
+        def __call__(self, prompt):
+            return FakeResult()
+
+    monkeypatch.setattr(strands.models, "BedrockModel", FakeModel)
+    monkeypatch.setattr(strands, "Agent", FakeAgent)
+    pack = load_pack(ROOT / "rule-packs" / "acme-arch.yaml")
+    report = {"findings": [{"id": "F1", "rule_id": "ARCH-01", "status": "gap", "reason": "r",
+                            "evidence": [{"text": "reads the orders table"}]}]}
+    writer = FixWriter(ScriptedDecider(lambda s, k, q: ("false", 0.9)), guardrail_id="gr-123", guardrail_version="1")
+    add_fixes(report, pack, writer)
+    assert seen["guardrail_id"] == "gr-123" and seen["guardrail_version"] == "1" and seen["guardrail_trace"] == "enabled"
+    finding = report["findings"][0]
+    assert finding["fix_source"] == "rule-hint (blocked by Bedrock guardrail)"
+    assert finding["suggested_fix"] == pack.rule("ARCH-01").fix_hint
+    assert report["egress"]["guardrail_interventions"] == 1 and report["egress"]["guardrail"] == "gr-123"
