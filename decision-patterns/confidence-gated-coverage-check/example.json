@@ -1,0 +1,17 @@
+{
+  "rules": [
+    {"id": "ARCH-01", "topic": "which database, schema or tables a service owns, reads or writes",
+     "requirement": "Each microservice owns its data. No service reads or writes another service's database."},
+    {"id": "ARCH-03", "topic": "a request/response call one service makes to another service or an external API",
+     "requirement": "Every synchronous call has a timeout and a fallback."},
+    {"id": "ARCH-04", "topic": "correlation or trace IDs carried on requests and messages",
+     "requirement": "Every request and message carries a correlation ID.", "scope": "document"}
+  ],
+  "sections": [
+    ["Context", "The loyalty service awards points when an order is paid. Finance needs a monthly points report."],
+    ["Data", "Loyalty keeps balances in its own loyalty schema. To build the monthly report it reads the orders table of the order service directly."],
+    ["Calls", "Loyalty calls the customer service over HTTP to look up the tier. The call times out after 800 ms and falls back to the standard tier."],
+    ["Tracing", "Every HTTP request and every event carries the X-Correlation-Id header, which is copied into all log lines."]
+  ],
+  "expected": {"ARCH-01": "gap", "ARCH-03": "covered", "ARCH-04": "covered"}
+}

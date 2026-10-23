@@ -2,12 +2,12 @@ import logging
 from pathlib import Path
 
 import pytest
-
-from gapanalyzer import documents
-from gapanalyzer.engine import analyze
-from gapanalyzer.evaluate import evaluate
-from gapanalyzer.readers import ReaderUnavailable
 from conftest import ROOT
+
+from shodhaka.analysis.engine import analyze
+from shodhaka.documents import model as documents
+from shodhaka.documents.readers import ReaderUnavailable
+from shodhaka.evaluation.scoring import evaluate
 
 FORMATS = ROOT / "samples" / "acme-arch" / "formats"
 

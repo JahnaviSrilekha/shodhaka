@@ -1,7 +1,7 @@
 """Turn PDF and Word files into Markdown-style text so they split into sections like any ADR.
 
 Word: real heading styles (Title, Heading 1..3) become `#`/`##` lines; tables become pipe rows.
-PDF:  there are no heading styles, so headings are found by font size — a line set larger than
+PDF:  there are no heading styles, so headings are found by font size: a line set larger than
       the body text becomes a `##` heading. If a PDF uses one size throughout, a conservative
       text rule is used instead (short numbered or Title Case lines without a full stop).
 

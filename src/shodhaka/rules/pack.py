@@ -1,6 +1,6 @@
 """Load and validate rule packs.
 
-A rule pack is a YAML file that follows specs/contracts/rulepack.schema.json. The same
+A rule pack is a YAML file that follows rulepack.schema.json (next to this module). The same
 loader serves every standard: DORA, ISO 27001 or a company's own architecture rules.
 """
 
@@ -13,7 +13,7 @@ from pathlib import Path
 import jsonschema
 import yaml
 
-SCHEMA_PATH = Path(__file__).resolve().parents[2] / "specs" / "contracts" / "rulepack.schema.json"
+SCHEMA_PATH = Path(__file__).with_name("rulepack.schema.json")
 
 
 class RulePackError(ValueError):

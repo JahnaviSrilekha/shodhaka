@@ -6,12 +6,12 @@ import yaml
 
 pytest.importorskip("fastapi")
 pytest.importorskip("multipart")
+from conftest import ROOT, oracle  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 
-from conftest import ROOT, oracle  # noqa: E402
-from gapanalyzer.api import create_app  # noqa: E402
-from gapanalyzer.decider import ScriptedDecider  # noqa: E402
-from gapanalyzer.rulepack import RulePackError, compose  # noqa: E402
+from shodhaka.decider import ScriptedDecider  # noqa: E402
+from shodhaka.rules.pack import RulePackError, compose  # noqa: E402
+from shodhaka.web.api import create_app  # noqa: E402
 
 ADR = ROOT / "samples" / "acme-arch" / "visible" / "adr" / "adr-002-billing-invoices.md"
 TEMPLATE = yaml.safe_load((ROOT / "rule-packs" / "acme-arch.yaml").read_text())
@@ -135,7 +135,7 @@ def pack_oracle(state, key, question):
 
 
 def test_recommend_packs_then_analyse_with_the_chosen_ones(tmp_path):
-    from gapanalyzer.decider import Answer
+    from shodhaka.decider import Answer
 
     class Scripted(ScriptedDecider):
         def ask(self, state, questions):
@@ -180,6 +180,6 @@ def test_recommend_packs_then_analyse_with_the_chosen_ones(tmp_path):
 
 
 def test_shipped_packs_are_valid():
-    from gapanalyzer.rulepack import load_pack
+    from shodhaka.rules.pack import load_pack
     for path in (ROOT / "rule-packs").glob("*.yaml"):
         assert load_pack(path).rules

@@ -1,5 +1,5 @@
-from gapanalyzer import checks
-from gapanalyzer.documents import Document, Section
+from shodhaka.documents.model import Document, Section
+from shodhaka.rules import checks
 
 
 def doc(path, text, kind="config"):

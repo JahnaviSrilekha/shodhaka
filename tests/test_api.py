@@ -1,15 +1,14 @@
 import time
-from pathlib import Path
 
 import pytest
 
 pytest.importorskip("fastapi")
 pytest.importorskip("multipart")
+from conftest import ROOT, oracle  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 
-from conftest import ROOT, oracle  # noqa: E402
-from gapanalyzer.api import create_app  # noqa: E402
-from gapanalyzer.decider import ScriptedDecider  # noqa: E402
+from shodhaka.decider import ScriptedDecider  # noqa: E402
+from shodhaka.web.api import create_app  # noqa: E402
 
 VISIBLE = ROOT / "samples" / "acme-arch" / "visible"
 

@@ -11,8 +11,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from . import decider as d
-from .documents import Document
+from shodhaka import decider as d
+from shodhaka.documents.model import Document
 
 DIGEST_CHARS = 2200   # well inside Decider's 4,096-token window together with the question
 MIN_SHARE = 0.25      # a pack is recommended when it is the top pick for a document or averages this probability

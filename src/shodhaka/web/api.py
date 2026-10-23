@@ -1,6 +1,6 @@
 """HTTP API behind the review UI (ui/). Local only: bind it to 127.0.0.1.
 
-    gapanalyzer serve --threshold 0.75        # then open http://127.0.0.1:8000
+    shodhaka serve --threshold 0.75        # then open http://127.0.0.1:8000
 
 Everything is scoped: organisation -> project -> analysis. An organisation has general rule packs
 that apply to all its projects; a project can switch general packs off and add its own packs,
@@ -9,14 +9,14 @@ rules it ran with, so later edits to a pack never change an existing report.
 
 Flow inside a project: upload documents -> Decider analyses them in the background -> a person
 approves / rejects every finding, edits a document and re-checks it -> decisions export as
-expected.json for `gapanalyzer eval`.
+expected.json for `shodhaka eval`.
 """
 
 from __future__ import annotations
 
 import datetime as dt
-import json
 import hashlib
+import json
 import re
 import tempfile
 import threading
@@ -29,14 +29,14 @@ from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, Res
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from .decider import Decider, DeciderUnavailable
-from .documents import Document, classify, document_from_text, load_document
-from .engine import DEFAULT_THRESHOLD, DESIGN_SET, MODES, analyze
-from .recommend import recommend
-from .sanitize import clean, remove_unsafe
-from .rulepack import RulePackError, compose, parse, parse_yaml, to_yaml, validate
-from .suggest import FixWriter, add_fixes
-from .tenancy import ID, Conflict, NotFound, Workspace
+from shodhaka.analysis.engine import DEFAULT_THRESHOLD, DESIGN_SET, MODES, analyze
+from shodhaka.analysis.fixes import FixWriter, add_fixes
+from shodhaka.analysis.recommend import recommend
+from shodhaka.decider import Decider, DeciderUnavailable
+from shodhaka.documents.model import classify, document_from_text, load_document
+from shodhaka.documents.sanitize import clean, remove_unsafe
+from shodhaka.rules.pack import RulePackError, compose, parse, parse_yaml, to_yaml, validate
+from shodhaka.web.workspace import ID, Conflict, NotFound, Workspace
 
 MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 MAX_FILES = 50
@@ -224,7 +224,7 @@ def create_app(workspace: str | Path, pack_dir: str | Path,
                        progress={"done": len(docs), "total": len(docs), "current": None})
             except DeciderUnavailable as exc:
                 update(status="failed", error=f"Decider is not reachable: {exc}")
-            except Exception as exc:  # noqa: BLE001 — shown to the reviewer, not swallowed
+            except Exception as exc:  # noqa: BLE001 (shown to the reviewer, not swallowed)
                 update(status="failed", error=f"{type(exc).__name__}: {exc}")
 
     def start(store: Analyses, analysis_id: str, only: str | None = None) -> None:

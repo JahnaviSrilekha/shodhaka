@@ -2,9 +2,9 @@ from types import SimpleNamespace
 
 import pytest
 
-from gapanalyzer.decider import ScriptedDecider
-from gapanalyzer.redact import Redactor
-from gapanalyzer.suggest import EgressLog, _interventions
+from shodhaka.analysis.fixes import EgressLog, _interventions
+from shodhaka.decider import ScriptedDecider
+from shodhaka.documents.redact import Redactor
 
 
 def test_redact_and_restore_round_trip():

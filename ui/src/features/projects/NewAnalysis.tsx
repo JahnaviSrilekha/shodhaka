@@ -70,7 +70,7 @@ export function NewAnalysis({ scope, health }: Props) {
   const p = useMemo(() => plan(usable.map((f) => f.name), rules), [usable, rules]);
   useEffect(() => { if (!p.needsChoice) setMode(null); }, [p.needsChoice]);
   const effectiveMode: AnalysisMode = p.needsChoice ? mode ?? "per-document" : "per-document";
-  const gate = threshold ?? 0.9;
+  const gate = threshold ?? 0.75;
   const chosen = candidates.filter((c) => selected.includes(c.ref));
   const blocked = !usable.length || busy || health?.decider === "down" || !rules.length || problems.length > 0
     || (p.needsChoice && mode === null);

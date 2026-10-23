@@ -3,13 +3,13 @@
 Without retrieval (the default) every section is checked against every rule, so nothing can be
 skipped. That costs sections x rules and stops scaling for long documents or large rule packs.
 With retrieval, each rule is checked only against its `top_k` most similar sections; the rest
-are recorded as "not checked (retrieval)" — never as compliant.
+are recorded as "not checked (retrieval)", never as compliant.
 
 Methods, all local (nothing leaves the machine):
-  * bm25   — keyword ranking, pure Python, no model and no download.
-  * minilm — meaning-based ranking with a small embedding model
-             (sentence-transformers/all-MiniLM-L6-v2, about 90 MB, downloaded once).
-             Needs `pip install -e ".[embed]"` (PyTorch: use Python 3.12).
+  * bm25: keyword ranking, pure Python, no model and no download.
+  * minilm: meaning-based ranking with a small embedding model
+            (sentence-transformers/all-MiniLM-L6-v2, about 90 MB, downloaded once).
+            Needs `pip install -e ".[embed]"` (PyTorch: use Python 3.12).
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ import re
 from collections import Counter
 from typing import Protocol
 
-from .rulepack import Rule
+from shodhaka.rules.pack import Rule
 
 METHODS = ("none", "bm25", "minilm")
 TOKEN = re.compile(r"[a-z0-9]+")

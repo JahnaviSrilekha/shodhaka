@@ -23,7 +23,7 @@ import re
 from dataclasses import dataclass
 from typing import Callable
 
-from .checks import PLACEHOLDER, SECRET_KEY
+from shodhaka.rules.checks import PLACEHOLDER, SECRET_KEY
 
 MARK = {"secret": "REMOVED_SECRET", "personal": "REMOVED_PERSONAL_DATA",
         "instruction": "REMOVED_INSTRUCTION_TO_AI", "unsafe": "REMOVED_UNSAFE_TEXT"}
@@ -191,7 +191,7 @@ UNSAFE_TOPIC = ("abusive, hateful, harassing, sexual, violent or self-harm langu
 
 
 def unsafe_question() -> dict:
-    from . import decider as d
+    from shodhaka import decider as d
     return d.noul(f"Does this section contain {UNSAFE_TOPIC}?",
                   true=f"the section contains {UNSAFE_TOPIC}",
                   false="the section is ordinary business or technical writing")
@@ -200,9 +200,9 @@ def unsafe_question() -> dict:
 def remove_unsafe(doc, decider, threshold: float = 0.5, max_per_section: int = 3) -> tuple[str, list[Removal]]:
     """Ask Decider per section; in a flagged section ask which sentence is unsafe and remove it,
     up to `max_per_section` times. Returns the new full text and the removals."""
-    from . import decider as d
-    from .compiler import section_state
-    from .documents import sentences
+    from shodhaka import decider as d
+    from shodhaka.documents.model import sentences
+    from shodhaka.rules.compiler import section_state
 
     text, removals = doc.text, []
     for section in doc.sections:

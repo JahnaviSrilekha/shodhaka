@@ -1,10 +1,10 @@
-from pathlib import Path
 
 from conftest import ROOT
-from gapanalyzer.checks import secret_scan
-from gapanalyzer.decider import Answer, ScriptedDecider
-from gapanalyzer.documents import document_from_text
-from gapanalyzer.sanitize import clean, remove_unsafe
+
+from shodhaka.decider import Answer, ScriptedDecider
+from shodhaka.documents.model import document_from_text
+from shodhaka.documents.sanitize import clean, remove_unsafe
+from shodhaka.rules.checks import secret_scan
 
 TEXT = """# Payments design
 

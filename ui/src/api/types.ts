@@ -1,4 +1,4 @@
-// Mirrors the JSON written by src/gapanalyzer (engine.py report, api.py analysis + reviews).
+// Mirrors the JSON written by src/shodhaka (engine.py report, api.py analysis + reviews).
 export type Status = "gap" | "needs_review" | "covered" | "not_applicable";
 export type Verdict = "gap" | "compliant" | "not_applicable";
 export type Decision = "approved" | "rejected" | "resolved";
@@ -180,7 +180,7 @@ export interface ProjectDetail extends Omit<Project, "project_packs"> {
   rules_problem: string | null;
 }
 
-// Raw rule pack, as in specs/contracts/rulepack.schema.json
+// Raw rule pack, as in src/shodhaka/rules/rulepack.schema.json
 export interface RawOption { verdict: "compliant" | "gap" | "not_applicable"; description: string }
 export interface RawRule {
   id: string;

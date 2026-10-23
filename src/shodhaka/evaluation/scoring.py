@@ -55,7 +55,7 @@ def evaluate(report: dict[str, Any], expected_path: str | Path) -> dict[str, Any
 def rescore(report: dict[str, Any], threshold: float) -> dict[str, Any]:
     """Re-apply the confidence gate at another threshold, from the per-section answers already
     stored in the report. No model calls: tuning the threshold costs nothing."""
-    from .engine import gate
+    from shodhaka.analysis.engine import gate
 
     findings = []
     for f in report["findings"]:

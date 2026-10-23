@@ -12,7 +12,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from .readers import READERS, ReaderUnavailable
+from shodhaka.documents.readers import READERS, ReaderUnavailable
 
 log = logging.getLogger(__name__)
 
@@ -86,7 +86,7 @@ def load_document(path: Path, root: Path) -> Document | None:
         except ReaderUnavailable as exc:
             log.warning("skipped %s: %s", relative, exc)
             return None
-        except Exception as exc:  # noqa: BLE001 — one unreadable file must not stop the run
+        except Exception as exc:  # noqa: BLE001 (one unreadable file must not stop the run)
             log.warning("skipped %s: could not read it (%s)", relative, exc)
             return None
         if not text.strip():

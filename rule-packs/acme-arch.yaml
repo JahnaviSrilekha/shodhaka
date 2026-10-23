@@ -1,5 +1,5 @@
-# Acme Shop architecture rules — a custom rule pack.
-# Every pack follows specs/contracts/rulepack.schema.json; DORA and ISO packs use the same shape.
+# Acme Shop architecture rules, a custom rule pack.
+# Every pack follows src/shodhaka/rules/rulepack.schema.json; DORA and ISO packs use the same shape.
 pack: acme-architecture
 version: "1.0"
 title: Acme Shop microservice architecture standards

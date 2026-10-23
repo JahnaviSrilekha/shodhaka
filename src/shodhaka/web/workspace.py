@@ -21,7 +21,7 @@ import uuid
 from pathlib import Path
 from typing import Any
 
-from .rulepack import RulePackError, compose, parse_yaml, to_yaml, validate
+from shodhaka.rules.pack import RulePackError, compose, parse_yaml, to_yaml, validate
 
 ID = re.compile(r"[a-f0-9]{12}")
 PACK_ID = re.compile(r"[a-z0-9][a-z0-9-]{1,63}")

@@ -1,9 +1,10 @@
 import json
 
 from conftest import VISIBLE
-from gapanalyzer.bench import BedrockDecider, _answer, cost, render, summarise, table
-from gapanalyzer.engine import analyze
-from gapanalyzer.evaluate import evaluate
+
+from shodhaka.analysis.engine import analyze
+from shodhaka.evaluation.bench import BedrockDecider, _answer, cost, render, summarise, table
+from shodhaka.evaluation.scoring import evaluate
 
 
 class FakeBedrock:
@@ -63,13 +64,13 @@ def test_unparseable_and_odd_answers_become_unsure():
 
 
 def test_cli_refuses_to_send_text_without_consent(capsys):
-    from gapanalyzer.cli import main
+    from shodhaka.cli import main
     assert main(["bench", "--pack", "rule-packs/acme-arch.yaml", "--docs", str(VISIBLE), "--expected", str(VISIBLE / "expected.json")]) == 1
     assert "WITHOUT redaction" in capsys.readouterr().err
 
 
 def test_cli_reuses_a_decider_report_without_new_calls(pack, visible_docs, scripted, tmp_path):
-    from gapanalyzer.cli import main
+    from shodhaka.cli import main
     report = analyze(pack, visible_docs, scripted, threshold=0.9)
     report["decider"] = scripted.stats.as_dict()
     (tmp_path / "r.json").write_text(json.dumps(report))

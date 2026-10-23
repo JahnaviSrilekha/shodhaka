@@ -10,9 +10,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from . import decider as d
-from .documents import Document, Section, sentences
-from .rulepack import Rule
+from shodhaka import decider as d
+from shodhaka.documents.model import Document, Section, sentences
+from shodhaka.rules.pack import Rule
 
 STATE_TEMPLATE = (
     "Below is one section of a {kind} document under architecture review. "

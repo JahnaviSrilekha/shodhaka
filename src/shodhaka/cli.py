@@ -1,11 +1,11 @@
 """Command line: validate a pack, run an analysis, score it against ground truth.
 
-    gapanalyzer validate rule-packs/acme-arch.yaml
-    gapanalyzer run --pack rule-packs/acme-arch.yaml --docs samples/acme-arch/visible --out out/visible
-    gapanalyzer run ... --bedrock                      # draft fixes with Bedrock (redacted snippets only)
-    gapanalyzer run --pack general.yaml --project-pack payments.yaml --docs ...   # layered like the UI
-    gapanalyzer serve --threshold 0.75                 # organisations, projects and review UI on :8000
-    gapanalyzer eval out/visible/report.json samples/acme-arch/visible/expected.json
+    shodhaka validate rule-packs/acme-arch.yaml
+    shodhaka run --pack rule-packs/acme-arch.yaml --docs samples/acme-arch/visible --out out/visible
+    shodhaka run ... --bedrock                      # draft fixes with Bedrock (redacted snippets only)
+    shodhaka run --pack general.yaml --project-pack payments.yaml --docs ...   # layered like the UI
+    shodhaka serve                                  # organisations, projects and review UI on :8000
+    shodhaka eval out/visible/report.json samples/acme-arch/visible/expected.json
 """
 
 from __future__ import annotations
@@ -16,14 +16,14 @@ import logging
 import sys
 from pathlib import Path
 
-from .decider import DEFAULT_URL, DeciderUnavailable, HttpDecider
-from .documents import discover
-from .engine import DEFAULT_THRESHOLD, analyze
-from .evaluate import calibrate, compare, evaluate
-from .report import write_html, write_json
-from .retrieval import METHODS, make_ranker
-from .rulepack import RulePackError, load_pack
-from .suggest import DEFAULT_MODEL, DEFAULT_REGION, FixWriter, add_fixes
+from shodhaka.analysis.engine import DEFAULT_THRESHOLD, analyze
+from shodhaka.analysis.fixes import DEFAULT_MODEL, DEFAULT_REGION, FixWriter, add_fixes
+from shodhaka.analysis.report import write_html, write_json
+from shodhaka.analysis.retrieval import METHODS, make_ranker
+from shodhaka.decider import DEFAULT_URL, DeciderUnavailable, HttpDecider
+from shodhaka.documents.model import discover
+from shodhaka.evaluation.scoring import calibrate, compare, evaluate
+from shodhaka.rules.pack import RulePackError, load_pack
 
 
 def cmd_validate(args: argparse.Namespace) -> int:
@@ -43,7 +43,7 @@ def cmd_validate(args: argparse.Namespace) -> int:
 def _layered_pack(general: list[str], project: list[str]):
     """One --pack is used as is; several packs (and --project-pack) are layered like in the UI:
     project rules replace general rules with the same id."""
-    from .rulepack import compose, parse, parse_yaml
+    from shodhaka.rules.pack import compose, parse, parse_yaml
 
     if len(general) == 1 and not project:
         return load_pack(general[0]), {}
@@ -129,16 +129,16 @@ def cmd_compare(args: argparse.Namespace) -> int:
 
 
 def cmd_review_sheet(args: argparse.Namespace) -> int:
-    from .review import write_sheet
+    from shodhaka.evaluation.review import write_sheet
     report = json.loads(Path(args.report).read_text(encoding="utf-8"))
     count = write_sheet(report, Path(args.out), include_not_applicable=args.all)
     print(f"{count} rows written to {args.out}. Fill the 'your_verdict' column with gap, compliant or not_applicable,")
-    print(f"then run: gapanalyzer review-score {args.out} --expected-out <file>.json")
+    print(f"then run: shodhaka review-score {args.out} --expected-out <file>.json")
     return 0
 
 
 def cmd_review_score(args: argparse.Namespace) -> int:
-    from .review import read_sheet, score, to_expected
+    from shodhaka.evaluation.review import read_sheet, score, to_expected
     filled, problems = read_sheet(Path(args.sheet))
     for problem in problems:
         print(f"warning: {problem}", file=sys.stderr)
@@ -150,15 +150,15 @@ def cmd_review_score(args: argparse.Namespace) -> int:
         Path(args.expected_out).parent.mkdir(parents=True, exist_ok=True)
         Path(args.expected_out).write_text(json.dumps(to_expected(filled, args.pack), indent=2), encoding="utf-8")
         print(f"ground truth for {len(filled)} rows written to {args.expected_out}; "
-              f"score the full report with: gapanalyzer eval <report.json> {args.expected_out} -v")
+              f"score the full report with: shodhaka eval <report.json> {args.expected_out} -v")
     return 0
 
 
 def cmd_bench(args: argparse.Namespace) -> int:
     import time as _time
 
-    from .bench import NOVA_LITE_PRICE, BedrockDecider, cost, summarise, table, write
-    from .evaluate import rescore
+    from shodhaka.evaluation.bench import BedrockDecider, cost, summarise, table, write
+    from shodhaka.evaluation.scoring import rescore
 
     if not args.skip_llm and not args.send_to_bedrock:
         print("The LLM side sends section text to Bedrock WITHOUT redaction (the analyzer never does).\n"
@@ -204,7 +204,7 @@ def cmd_bench(args: argparse.Namespace) -> int:
         started = _time.perf_counter()
         try:
             llm_report = analyze(pack, documents, llm, threshold=args.threshold, mode=mode)
-        except Exception as exc:  # noqa: BLE001 — credentials, model access, region
+        except Exception as exc:  # noqa: BLE001 (credentials, model access, region)
             print(f"Bedrock call failed: {type(exc).__name__}: {exc}\n"
                   f"Check AWS credentials and that {args.model} is enabled in {args.region}.", file=sys.stderr)
             return 2
@@ -230,7 +230,7 @@ def cmd_serve(args: argparse.Namespace) -> int:
     try:
         import uvicorn
 
-        from .api import create_app
+        from shodhaka.web.api import create_app
     except ImportError:
         print('the UI server needs extra packages: pip install -e ".[ui]"', file=sys.stderr)
         return 1
@@ -247,7 +247,7 @@ def cmd_serve(args: argparse.Namespace) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="gapanalyzer", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(prog="shodhaka", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="command", required=True)
 
     v = sub.add_parser("validate", help="validate a rule pack against the schema")
@@ -301,7 +301,7 @@ def main(argv: list[str] | None = None) -> int:
 
     sc = sub.add_parser("review-score", help="precision from a filled review sheet; optionally write expected.json")
     sc.add_argument("sheet")
-    sc.add_argument("--expected-out", help="write the labels as an expected.json for gapanalyzer eval")
+    sc.add_argument("--expected-out", help="write the labels as an expected.json for shodhaka eval")
     sc.add_argument("--pack", default="acme-architecture")
     sc.set_defaults(func=cmd_review_score)
 

@@ -113,7 +113,7 @@ export function PackEditorPage({ scope, packId }: { scope: PackScope; packId: st
         <section className="card">
           <textarea className="yaml-editor" value={yaml} spellCheck={false} aria-label="Rule pack YAML"
             onChange={(e) => { setYaml(e.target.value); setDirty(true); }} />
-          <p className="muted small">Follows specs/contracts/rulepack.schema.json. Comments are kept when you save from this tab.</p>
+          <p className="muted small">Follows the rule-pack schema. Comments are kept when you save from this tab.</p>
         </section>
       ) : (
         <>

@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 
 import yaml
 
-from .documents import Document
+from shodhaka.documents.model import Document
 
 SECRET_KEY = re.compile(r"(password|passwd|pwd|secret|api[-_]?key|token|private[-_]?key|credentials?)$", re.I)
 PLACEHOLDER = re.compile(r"^\s*(\$\{[^}]+\}|<[^>]+>|\*+|)\s*$")

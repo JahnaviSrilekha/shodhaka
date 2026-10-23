@@ -19,11 +19,14 @@ ui = ["fastapi>=0.110", "uvicorn>=0.29", "python-multipart>=0.0.9"]
 dev = ["pytest>=8", "reportlab>=4", "httpx>=0.27"]
 
 [project.scripts]
-gapanalyzer = "gapanalyzer.cli:main"
+shodhaka = "shodhaka.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+"shodhaka.rules" = ["rulepack.schema.json"]
+
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "decision-patterns"]
 pythonpath = ["src"]

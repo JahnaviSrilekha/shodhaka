@@ -8,7 +8,7 @@ export function useHealth() {
   const [health, setHealth] = useState<Health | null>(null);
   useEffect(() => {
     let alive = true;
-    const check = () => api.health().then((h) => alive && setHealth(h)).catch(() => alive && setHealth({ decider: "down", error: "API not reachable", bedrock: false, default_threshold: 0.9 }));
+    const check = () => api.health().then((h) => alive && setHealth(h)).catch(() => alive && setHealth({ decider: "down", error: "API not reachable", bedrock: false, default_threshold: 0.75 }));
     check();
     const t = window.setInterval(check, 15000);
     return () => { alive = false; window.clearInterval(t); };

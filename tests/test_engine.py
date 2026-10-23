@@ -1,11 +1,12 @@
 from pathlib import Path
 
-from gapanalyzer.decider import ScriptedDecider
-from gapanalyzer.engine import analyze
-from gapanalyzer.evaluate import evaluate
-from gapanalyzer.report import write_html, write_json
-from gapanalyzer.suggest import add_fixes
 from conftest import VISIBLE
+
+from shodhaka.analysis.engine import analyze
+from shodhaka.analysis.fixes import add_fixes
+from shodhaka.analysis.report import write_html, write_json
+from shodhaka.decider import ScriptedDecider
+from shodhaka.evaluation.scoring import evaluate
 
 
 def by_key(report):
@@ -48,7 +49,7 @@ def test_off_topic_section_cannot_drag_a_covered_rule_into_review(pack, visible_
 
 
 def test_calibrate_rescores_without_model_calls(pack, visible_docs, scripted):
-    from gapanalyzer.evaluate import calibrate
+    from shodhaka.evaluation.scoring import calibrate
     report = analyze(pack, visible_docs, scripted)
     calls = scripted.stats.calls
     rows = calibrate(report, VISIBLE / "expected.json")
@@ -101,7 +102,7 @@ def _s(heading, verdict, conf):
 
 
 def test_gate_document_scope_lets_one_clear_section_cover_the_document():
-    from gapanalyzer.engine import gate
+    from shodhaka.analysis.engine import gate
     sections = [_s("Publishing invoices", "gap", 0.896), _s("Tax calculation", "compliant", 0.868)]
     assert gate(sections, 0.8, "section")[0] == "gap"
     status, _, reason = gate(sections, 0.8, "document")
@@ -109,18 +110,18 @@ def test_gate_document_scope_lets_one_clear_section_cover_the_document():
 
 
 def test_gate_document_scope_still_reports_gap_when_nothing_complies():
-    from gapanalyzer.engine import gate
+    from shodhaka.analysis.engine import gate
     assert gate([_s("Messages", "gap", 0.966)], 0.8, "document")[0] == "gap"
 
 
 def test_stage_one_uses_the_rules_short_topic(pack):
-    from gapanalyzer.compiler import relevance_question
+    from shodhaka.rules.compiler import relevance_question
     q = relevance_question(pack.rule("ARCH-05"))
     assert q["instructions"].startswith("Does this section talk about a request/response call")
 
 
 def test_design_set_presence_rule_met_anywhere_prohibition_broken_anywhere(pack, visible_docs, scripted):
-    from gapanalyzer.engine import DESIGN_SET
+    from shodhaka.analysis.engine import DESIGN_SET
     report = analyze(pack, visible_docs, scripted, mode="design-set")
     adrs = sorted(d.path for d in visible_docs if d.kind == "adr")
     assert report["mode"] == "design-set" and report["design_set"] == adrs
@@ -146,6 +147,6 @@ def test_design_set_presence_rule_met_anywhere_prohibition_broken_anywhere(pack,
 
 
 def test_per_document_mode_is_unchanged(pack, visible_docs, scripted):
-    from gapanalyzer.engine import DESIGN_SET
+    from shodhaka.analysis.engine import DESIGN_SET
     report = analyze(pack, visible_docs, scripted)
     assert report["mode"] == "per-document" and not any(f["document"] == DESIGN_SET for f in report["findings"])

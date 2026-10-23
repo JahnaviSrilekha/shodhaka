@@ -1,10 +1,10 @@
 """Human review of a report: the way to measure real-world documents that have no ground truth.
 
-    gapanalyzer review-sheet out/real/report.json --out review.csv          # gaps, reviews, covered
-    gapanalyzer review-sheet out/real/report.json --out review.csv --all    # also "not applicable" rows
+    shodhaka review-sheet out/real/report.json --out review.csv          # gaps, reviews, covered
+    shodhaka review-sheet out/real/report.json --out review.csv --all    # also "not applicable" rows
     # open review.csv in Numbers or Excel, fill `your_verdict` with gap / compliant / not_applicable
-    gapanalyzer review-score review.csv --expected-out data/real-expected.json
-    gapanalyzer eval out/real/report.json data/real-expected.json -v
+    shodhaka review-score review.csv --expected-out data/real-expected.json
+    shodhaka eval out/real/report.json data/real-expected.json -v
 
 Precision needs only the rows the tool flagged as gaps. Recall needs every row of the documents you
 label (use --all), otherwise a gap the tool called "not applicable" can never be counted as missed.
@@ -13,7 +13,6 @@ label (use --all), otherwise a gap the tool called "not applicable" can never be
 from __future__ import annotations
 
 import csv
-import json
 from pathlib import Path
 from typing import Any
 

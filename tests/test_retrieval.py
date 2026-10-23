@@ -1,9 +1,9 @@
 import pytest
-
-from gapanalyzer.engine import analyze
-from gapanalyzer.evaluate import compare, evaluate
-from gapanalyzer.retrieval import BM25, rule_query, shortlist
 from conftest import VISIBLE
+
+from shodhaka.analysis.engine import analyze
+from shodhaka.analysis.retrieval import BM25, rule_query, shortlist
+from shodhaka.evaluation.scoring import compare, evaluate
 
 # where each planted gap or compliance statement actually lives (rule, file, section heading)
 EVIDENCE = [
@@ -33,8 +33,9 @@ def test_rule_query_uses_topic_and_descriptions(pack):
 
 
 def test_retrieval_cuts_calls_and_keeps_results(pack, visible_docs, scripted):
-    from gapanalyzer.decider import ScriptedDecider
     from conftest import oracle
+
+    from shodhaka.decider import ScriptedDecider
     full = analyze(pack, visible_docs, scripted)
     short_decider = ScriptedDecider(oracle)
     short = analyze(pack, visible_docs, short_decider, ranker=BM25(), top_k=2)

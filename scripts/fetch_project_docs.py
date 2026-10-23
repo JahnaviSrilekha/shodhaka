@@ -3,7 +3,7 @@ projects, pinned to one commit each, so the rule pack can be tried on real desig
 
     python scripts/fetch_project_docs.py                       # all projects below, into data/projects
     python scripts/fetch_project_docs.py --only piggymetrics   # one project
-    gapanalyzer run --pack rule-packs/acme-arch.yaml --docs data/projects/piggymetrics --out out/projects/piggymetrics
+    shodhaka run --pack rule-packs/acme-arch.yaml --docs data/projects/piggymetrics --out out/projects/piggymetrics
 
 Only permissively licensed repositories are used (checked through the GitHub API at download
 time). The files stay under data/ (git-ignored) and are not redistributed with this repo;

@@ -1,62 +1,76 @@
 # Decision pattern: confidence-gated coverage check
 
-**Pattern tag:** #policy · **Where:** `src/gapanalyzer/compiler.py`, `src/gapanalyzer/engine.py`
+**Pattern tag:** #policy
 
-Check a piece of text against many rules at once, with a calibrated confidence on every
-verdict, and never let the model mark something as "passed".
+Check a document against many rules with Strands Decider 2B. The model answers small yes/no
+questions; plain code turns the answers into a verdict, and nothing is passed automatically.
 
-## The typed question
+`coverage_check.py` is the whole pattern in about 110 lines of standard-library Python. Copy it
+into your project. Shodhaka uses the same logic in `src/shodhaka/rules/compiler.py` (questions)
+and `src/shodhaka/analysis/engine.py` (`gate`).
 
-Each rule in a rule pack becomes one `choice` question. The options are the rule's own, and
-each option carries a verdict the code (not the model) acts on:
-
-```yaml
-decider:
-  question: How does this text describe data access between services?
-  options:
-    owns-own-data:               {verdict: compliant,      description: each service reads and writes only its own database ...}
-    accesses-other-service-data: {verdict: gap,            description: a service reads or writes another service's database ...}
-    not-discussed:               {verdict: not_applicable, description: the text does not discuss how services access data}
+```bash
+strands-decider serve StrandsAgents/strands-decider-2B-qwen3.5-v1-2610 --port 8099
+python run_example.py            # runs example.json against Decider
+python -m pytest -q              # no Decider needed (fake answers)
 ```
 
-Always include a `not_applicable` option: it gives the model an honest way out for
-sections that do not talk about the rule, which keeps confidence on the other options meaningful.
+## The typed questions
 
-### Two optional fields that matter in practice
+For every section of the document:
 
-- `topic`: a short phrase for the stage-1 "is this section about the rule?" question
-  (e.g. "calls from one service to another service or to an external system"). Short topics
-  are recognised far more reliably than long generated ones.
-- `scope: document`: for rules a design meets once for all (e.g. "messages carry a correlation
-  ID"), one section that clearly complies covers the document, and sections that simply do not
-  mention it are not gaps. Default `section`: every section must comply.
+1. **On topic?** One request, one yes/no per rule: "Does this section talk about
+   *which database, schema or tables a service owns, reads or writes*?"
+2. **Compliant?** One more request, only for the rules that are on topic: "Does what this
+   section describes meet this requirement: *Each microservice owns its data*?"
 
-On the visible sample set this took exact accuracy from 0.579 (one 3-way choice, threshold 0.9)
-to 0.947 (two-stage yes/no, document scope, threshold 0.75) with zero false alarms.
+The section is the `state`, the rules are the questions, keyed by rule id. Decider reads the
+section once per request, so each extra rule costs only its own question.
 
-## The wiring
+A rule needs three things:
 
-1. **One request per section, every rule in it.** The section is the `state`; each applicable
-   rule is a question keyed by its rule id. Decider encodes the state once and each extra rule
-   costs only its own question tokens.
-2. **Gate in code.**
-   - a `gap` answer at confidence ≥ threshold → **gap**
-   - a `gap` answer below threshold → **needs_review** (escalate to an LLM or a human)
-   - a `compliant` answer at ≥ threshold → **covered**, still pending human sign-off
-   - otherwise → **not_applicable**
-3. **Evidence by choice.** For a gap, a second `choice` question offers the section's
-   sentences as options: "Which sentence is the strongest evidence that ...?" The report
-   quotes the chosen sentence.
+```python
+Rule(id="ARCH-01",
+     topic="which database, schema or tables a service owns, reads or writes",  # short!
+     requirement="Each microservice owns its data. No service reads or writes another service's database.",
+     scope="section")
+```
 
-## How to reuse it
+Keep `topic` to a short noun phrase. Long, generated topics were recognised far less reliably.
 
-- Write your rules as YAML that follows `specs/contracts/rulepack.schema.json`.
-- Call `analyze(pack, documents, decider, threshold=0.9)` from `gapanalyzer.engine`.
-- Start the threshold at 0.9 and tune it on documents with planted gaps, then confirm on a
-  held-out set you never tuned on.
+## The gate (in code, not in the model)
 
-## What it costs and what it does not do
+| Answers across sections | Status |
+|---|---|
+| a "breaks it" at confidence ≥ threshold | `gap` |
+| a "breaks it" below the threshold | `needs_review` (a person decides) |
+| a "meets it" at ≥ threshold | `covered`, still waiting for sign-off |
+| a "meets it" below the threshold | `needs_review` |
+| no section on topic | `not_applicable` |
 
-- Decider is weaker on hard multi-step reasoning, so keep each rule question short and specific.
-- It classifies; it does not explain. Explanations and fixes come from Bedrock, on redacted snippets only.
-- Prompt injection inside a document can sway a classifier but cannot change the policy: pass/fail is set in code.
+`scope` says how sections combine:
+
+- `section` (the default) for prohibitions such as "never share a database": any section that
+  breaks it makes a gap.
+- `document` for things that must be present somewhere, such as "messages carry a correlation
+  ID": one section that clearly meets it covers the document, and sections that do not mention
+  it are not gaps.
+
+## Why two yes/no questions
+
+On Shodhaka's tuning set, one three-way `choice` per rule and section reached 58% exact
+accuracy. Two yes/no questions reached 63%, and short topics plus `scope: document` took it to
+90%, with no false alarms. Off-topic sections stop voting on rules they never discuss.
+
+## Choosing the threshold
+
+Start at 0.75. Keep every per-section answer, so you can re-score other thresholds offline
+(`shodhaka calibrate` does this), tune on documents with planted gaps, then confirm once on a
+held-out set you never tuned on.
+
+## Limits
+
+- Decider classifies; it does not explain. Write fixes with an LLM, on redacted text.
+- It is weaker at multi-step reasoning, so keep each question about one thing.
+- Text inside a document can try to sway the model, but it cannot change the policy: the
+  verdict is decided by the gate, and the state tells the model the section is data.

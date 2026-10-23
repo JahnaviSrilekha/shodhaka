@@ -1,9 +1,9 @@
 """The gap-analysis engine: one engine for every rule pack.
 
 Who decides what:
-  * code      — deterministic checks (secrets, health endpoint, pinned images)
-  * Decider   — typed choice per (rule, section), confidence-gated
-  * human     — every finding stays `pending` until a person accepts or rejects it
+  * code: deterministic checks (secrets, health endpoint, pinned images)
+  * Decider: typed yes/no questions per (rule, section), confidence-gated
+  * human: every finding stays `pending` until a person accepts or rejects it
 
 Nothing is ever marked "passed". The best a rule can get is `covered`, which still needs sign-off.
 """
@@ -15,14 +15,14 @@ import uuid
 from dataclasses import asdict, dataclass, field
 from typing import Any, Callable
 
-from . import checks
-from .compiler import compliance_question, evidence_question, relevance_question, section_questions, section_state
-from .decider import Decider
-from .documents import Document, Section
-from .retrieval import Ranker, shortlist
-from .rulepack import Rule, RulePack
+from shodhaka.analysis.retrieval import Ranker, shortlist
+from shodhaka.decider import Decider
+from shodhaka.documents.model import Document, Section
+from shodhaka.rules import checks
+from shodhaka.rules.compiler import compliance_question, evidence_question, relevance_question, section_questions, section_state
+from shodhaka.rules.pack import Rule, RulePack
 
-DEFAULT_THRESHOLD = 0.9
+DEFAULT_THRESHOLD = 0.75  # chosen on the tuning set with `shodhaka calibrate`
 
 # status values
 GAP = "gap"                # confident gap
@@ -230,8 +230,8 @@ NOT_CHECKED = "not-checked-retrieval"
 
 def _two_stage_decisions(doc: Document, rules: list[Rule], decider: Decider,
                          picks: dict[str, set[int]] | None = None) -> dict[str, list[SectionDecision]]:
-    """Stage 1: one yes/no per rule — is the section on topic? (all rules in one request)
-    Stage 2: one yes/no per on-topic rule — does it meet the requirement? (one request)
+    """Stage 1: one yes/no per rule: is the section on topic? (all rules in one request)
+    Stage 2: one yes/no per on-topic rule: does it meet the requirement? (one request)
     Yes/no answers are sharper than a 3-way choice, and off-topic sections no longer vote.
     `picks` (from retrieval) limits which sections each rule is checked against; skipped pairs are
     recorded as not applicable with option 'not-checked-retrieval', never as compliant."""

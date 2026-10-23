@@ -1,7 +1,7 @@
 """Draft fixes for gaps with Amazon Bedrock, behind two Decider-backed guards.
 
   * EgressGuard (before_model_call): nothing reaches Bedrock while it still contains an
-    original identifier the redactor replaced, a sensitive pattern, or — per Decider —
+    original identifier the redactor replaced, a sensitive pattern, or (per Decider)
     identifying details. Every allowed call is logged with its byte count.
   * FixGuard (before_tool_call on submit_fix): Decider checks the proposed fix actually
     resolves the gap; if not, the model gets Guide feedback and tries again (max 2 times).
@@ -15,10 +15,10 @@ import json
 from dataclasses import dataclass, field
 from typing import Any
 
-from . import decider as d
-from .decider import Decider
-from .redact import Redactor
-from .rulepack import Rule, RulePack
+from shodhaka import decider as d
+from shodhaka.decider import Decider
+from shodhaka.documents.redact import Redactor
+from shodhaka.rules.pack import Rule, RulePack
 
 DEFAULT_MODEL = "eu.amazon.nova-lite-v1:0"
 DEFAULT_REGION = "eu-central-1"
@@ -163,7 +163,7 @@ def add_fixes(report: dict[str, Any], pack: RulePack, writer: FixWriter | None) 
             continue
         try:
             finding["suggested_fix"], finding["fix_source"] = writer.draft(rule, finding), "bedrock"
-        except Exception as exc:  # noqa: BLE001 — a Bedrock failure must not lose the finding
+        except Exception as exc:  # noqa: BLE001 (a Bedrock failure must not lose the finding)
             finding["suggested_fix"], finding["fix_source"] = rule.fix_hint, f"rule-hint (bedrock failed: {type(exc).__name__})"
     if writer is not None:
         report["egress"] = {"bedrock_calls": writer.log.calls, "bytes_sent": writer.log.bytes_sent,

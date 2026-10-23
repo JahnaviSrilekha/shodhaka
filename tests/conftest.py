@@ -2,9 +2,9 @@ from pathlib import Path
 
 import pytest
 
-from gapanalyzer.decider import ScriptedDecider
-from gapanalyzer.documents import discover
-from gapanalyzer.rulepack import load_pack
+from shodhaka.decider import ScriptedDecider
+from shodhaka.documents.model import discover
+from shodhaka.rules.pack import load_pack
 
 ROOT = Path(__file__).resolve().parents[1]
 PACK = ROOT / "rule-packs" / "acme-arch.yaml"

@@ -5,7 +5,7 @@ enough that plain React, a typed API module and a few hooks keep it easy to read
 
 ```
 src/
-  api/types.ts        the report and review contract (mirrors src/gapanalyzer)
+  api/types.ts        the report and review contract (mirrors src/shodhaka)
   api/client.ts       the only module that calls fetch(); throws ApiError with the server's message
   domain/review.ts    pure review rules: approve/reject options, review order, filters, fix insertion
   domain/packForm.ts  rule pack <-> editor form conversion (tested round trip)
@@ -34,7 +34,7 @@ Patterns used:
 
 ```bash
 npm install
-npm run dev      # http://127.0.0.1:5173, forwards /api to gapanalyzer serve on :8000
+npm run dev      # http://127.0.0.1:5173, forwards /api to shodhaka serve on :8000
 npm test         # vitest + Testing Library
-npm run build    # writes dist/, which gapanalyzer serve hosts on :8000
+npm run build    # writes dist/, which shodhaka serve hosts on :8000
 ```

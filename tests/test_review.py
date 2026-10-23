@@ -1,9 +1,9 @@
 import csv
 from pathlib import Path
 
-from gapanalyzer.engine import analyze
-from gapanalyzer.evaluate import evaluate
-from gapanalyzer.review import read_sheet, score, to_expected, write_sheet
+from shodhaka.analysis.engine import analyze
+from shodhaka.evaluation.review import read_sheet, score, to_expected, write_sheet
+from shodhaka.evaluation.scoring import evaluate
 
 
 def _label(path: Path, verdicts: dict[tuple[str, str], str]) -> None:

@@ -2,9 +2,9 @@ import copy
 
 import pytest
 import yaml
-
-from gapanalyzer.rulepack import RulePackError, parse, validate
 from conftest import PACK
+
+from shodhaka.rules.pack import RulePackError, parse, validate
 
 
 def raw():

@@ -82,7 +82,7 @@ export function AnalysisPage({ scope, id, findingId }: { scope: Scope; id: strin
               <span className="progress"><span style={{ width: `${done!.percent}%` }} /></span>
               {done!.done}/{done!.total} reviewed
             </span>
-            <a className="button" href={api.exportUrl.expected(scope, id)} download title="Your verdicts, ready for: gapanalyzer eval report.json expected.json">
+            <a className="button" href={api.exportUrl.expected(scope, id)} download title="Your verdicts, ready for: shodhaka eval report.json expected.json">
               <Icon name="download" /> expected.json
             </a>
             <a className="button" href={api.exportUrl.report(scope, id)} download><Icon name="download" /> Report</a>
