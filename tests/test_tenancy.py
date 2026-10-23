@@ -183,3 +183,29 @@ def test_shipped_packs_are_valid():
     from shodhaka.rules.pack import load_pack
     for path in (ROOT / "rule-packs").glob("*.yaml"):
         assert load_pack(path).rules
+
+
+def test_delete_project_and_organization_moves_them_to_trash(api, tmp_path):
+    org = api.post("/api/orgs", json={"name": "Temp"}).json()["id"]
+    keep = api.post(f"/api/orgs/{org}/projects", json={"name": "Keep"}).json()["id"]
+    gone = api.post(f"/api/orgs/{org}/projects", json={"name": "Gone"}).json()["id"]
+
+    assert api.delete(f"/api/orgs/{org}/projects/{gone}").status_code == 204
+    assert api.get(f"/api/orgs/{org}/projects/{gone}").status_code == 404
+    assert [p["id"] for p in api.get(f"/api/orgs/{org}").json()["projects"]] == [keep]
+
+    assert api.delete(f"/api/orgs/{org}").status_code == 204
+    assert api.get(f"/api/orgs/{org}").status_code == 404
+    assert all(o["id"] != org for o in api.get("/api/orgs").json())
+    assert len(list((tmp_path / "ws" / "trash").iterdir())) == 2  # recoverable, not erased
+    assert api.delete(f"/api/orgs/{org}").status_code == 404
+
+
+def test_delete_is_refused_while_an_analysis_runs(api, tmp_path):
+    org = api.post("/api/orgs", json={"name": "Busy"}).json()["id"]
+    project = api.post(f"/api/orgs/{org}/projects", json={"name": "P"}).json()["id"]
+    run = tmp_path / "ws" / "orgs" / org / "projects" / project / "analyses" / "abc123abc123"
+    run.mkdir(parents=True)
+    (run / "meta.json").write_text('{"status": "running"}')
+    assert api.delete(f"/api/orgs/{org}/projects/{project}").status_code == 409
+    assert api.delete(f"/api/orgs/{org}").status_code == 409

@@ -1,10 +1,11 @@
 import { api, type Scope } from "../../api/client";
 import type { Health } from "../../api/types";
 import { Breadcrumbs } from "../../components/Breadcrumbs";
+import { DeleteButton } from "../../components/DeleteButton";
 import { StatusBadge, SeverityTag } from "../../components/StatusBadge";
 import { STATUS_ORDER } from "../../domain/review";
 import { sumUsage, usd } from "../../domain/usage";
-import { href } from "../../hooks/useHashRoute";
+import { href, navigate } from "../../hooks/useHashRoute";
 import { useLoad } from "../../hooks/useLoad";
 import { useToast } from "../../hooks/useToast";
 import { PackList } from "../packs/PackList";
@@ -35,9 +36,22 @@ export function ProjectPage({ scope, health }: { scope: Scope; health: Health | 
   return (
     <main className="page page-medium">
       <Breadcrumbs items={[{ label: "Organizations", href: "#/" }, { label: p.org_name, href: href({ page: "org", org: scope.org }) }, { label: p.name }]} />
-      <section className="hero">
-        <h1>{p.name}</h1>
-        {p.description && <p className="muted">{p.description}</p>}
+      <section className="hero hero-row">
+        <div>
+          <h1>{p.name}</h1>
+          {p.description && <p className="muted">{p.description}</p>}
+        </div>
+        <DeleteButton what="project"
+          detail={`Delete ${p.name} with its ${analyses.data?.length ?? 0} analyses, project rule packs, documents and reviews? It is moved to the workspace trash.`}
+          onDelete={async () => {
+            try {
+              await api.deleteProject(scope);
+              toast(`${p.name} deleted`, "success");
+              navigate({ page: "org", org: scope.org });
+            } catch (err) {
+              toast((err as Error).message, "error");
+            }
+          }} />
       </section>
 
       <div className="two-col wide-left">

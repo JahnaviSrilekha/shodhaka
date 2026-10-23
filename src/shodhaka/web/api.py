@@ -275,6 +275,16 @@ def create_app(workspace: str | Path, pack_dir: str | Path,
         return {**ws.get_org(org_id), "projects": ws.list_projects(org_id),
                 "general_packs": [_pack_summary(p) for p in ws.list_packs(org_id)]}
 
+    @app.delete("/api/orgs/{org_id}", status_code=204)
+    def delete_org(org_id: str) -> Response:
+        ws.delete_org(org_id)
+        return Response(status_code=204)
+
+    @app.delete("/api/orgs/{org_id}/projects/{project_id}", status_code=204)
+    def delete_project(org_id: str, project_id: str) -> Response:
+        ws.delete_project(org_id, project_id)
+        return Response(status_code=204)
+
     @app.post("/api/orgs/{org_id}/projects", status_code=201)
     def create_project(org_id: str, body: NameIn) -> dict:
         return ws.create_project(org_id, body.name, body.description)

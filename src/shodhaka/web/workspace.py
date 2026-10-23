@@ -5,6 +5,7 @@
     <workspace>/orgs/<org>/projects/<project>/project.json
     <workspace>/orgs/<org>/projects/<project>/packs/<pack>.yaml      project-specific rule packs
     <workspace>/orgs/<org>/projects/<project>/analyses/<analysis>/   uploads, report, reviews, rule snapshot
+    <workspace>/trash/                                               deleted organizations and projects
 
 Isolation is by path: every lookup goes through an organisation and a project, ids are checked
 against a strict pattern, so one project's documents, reports and rules never mix with another's.
@@ -16,6 +17,7 @@ from __future__ import annotations
 import datetime as dt
 import json
 import re
+import shutil
 import threading
 import uuid
 from pathlib import Path
@@ -84,6 +86,23 @@ class Workspace:
     def get_org(self, org_id: str) -> dict:
         return self._read(self.org_dir(org_id) / "org.json")
 
+    def delete_org(self, org_id: str) -> None:
+        """Move the organization with all its projects, packs and analyses to <workspace>/trash."""
+        with self.lock:
+            folder = self.org_dir(org_id)
+            self._refuse_if_running(folder)
+            self._to_trash(folder, f"org-{org_id}")
+
+    def _refuse_if_running(self, folder: Path) -> None:
+        for meta in folder.glob("**/analyses/*/meta.json"):
+            if self._read(meta).get("status") in ("queued", "cleaning", "running"):
+                raise Conflict("an analysis is still running here: wait until it finishes, then delete")
+
+    def _to_trash(self, folder: Path, name: str) -> None:
+        trash = self.root.parent / "trash"
+        trash.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(folder), str(trash / f"{dt.datetime.now().strftime('%Y%m%d-%H%M%S')}-{name}"))
+
     # ---- projects -----------------------------------------------------------------------------
     def project_dir(self, org_id: str, project_id: str) -> Path:
         folder = self.org_dir(org_id) / "projects" / project_id
@@ -113,6 +132,13 @@ class Workspace:
 
     def get_project(self, org_id: str, project_id: str) -> dict:
         return self._read(self.project_dir(org_id, project_id) / "project.json")
+
+    def delete_project(self, org_id: str, project_id: str) -> None:
+        """Move the project with its packs and analyses to <workspace>/trash."""
+        with self.lock:
+            folder = self.project_dir(org_id, project_id)
+            self._refuse_if_running(folder)
+            self._to_trash(folder, f"project-{project_id}")
 
     def update_project(self, org_id: str, project_id: str, **changes: Any) -> dict:
         with self.lock:

@@ -60,6 +60,8 @@ export const api = {
   orgs: () => request<Org[]>("/orgs"),
   createOrg: (name: string, description: string) => request<Org>("/orgs", json("POST", { name, description })),
   org: (org: string) => request<OrgDetail>(`/orgs/${org}`),
+  deleteOrg: (org: string) => request<void>(`/orgs/${org}`, { method: "DELETE" }),
+  deleteProject: (s: Scope) => request<void>(projectBase(s), { method: "DELETE" }),
   createProject: (org: string, name: string, description: string) =>
     request<Project>(`/orgs/${org}/projects`, json("POST", { name, description })),
   project: (s: Scope) => request<ProjectDetail>(projectBase(s)),

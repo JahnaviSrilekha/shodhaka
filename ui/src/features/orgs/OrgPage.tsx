@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { api } from "../../api/client";
 import { Breadcrumbs } from "../../components/Breadcrumbs";
+import { DeleteButton } from "../../components/DeleteButton";
 import { useLoad } from "../../hooks/useLoad";
 import { href, navigate } from "../../hooks/useHashRoute";
 import { useToast } from "../../hooks/useToast";
@@ -28,9 +29,22 @@ export function OrgPage({ org }: { org: string }) {
   return (
     <main className="page page-medium">
       <Breadcrumbs items={[{ label: "Organizations", href: "#/" }, { label: data.name }]} />
-      <section className="hero">
-        <h1>{data.name}</h1>
-        {data.description && <p className="muted">{data.description}</p>}
+      <section className="hero hero-row">
+        <div>
+          <h1>{data.name}</h1>
+          {data.description && <p className="muted">{data.description}</p>}
+        </div>
+        <DeleteButton what="organization"
+          detail={`Delete ${data.name} with its ${data.projects.length} project${data.projects.length === 1 ? "" : "s"}, rule packs, documents and reviews? It is moved to the workspace trash.`}
+          onDelete={async () => {
+            try {
+              await api.deleteOrg(org);
+              toast(`${data.name} deleted`, "success");
+              navigate({ page: "home" });
+            } catch (err) {
+              toast((err as Error).message, "error");
+            }
+          }} />
       </section>
 
       <div className="two-col">
