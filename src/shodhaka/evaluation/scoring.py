@@ -2,6 +2,8 @@
 
 Strict: only `gap` counts as catching a gap. Lenient: `needs_review` also counts, because a
 human sees it. The "false alarm" rate is gaps reported where the truth is compliant.
+Precision, recall and F1 treat "gap" as the positive class: precision is the share of reported
+gaps that are real, recall the share of real gaps reported as `gap`.
 """
 
 from __future__ import annotations
@@ -36,14 +38,20 @@ def evaluate(report: dict[str, Any], expected_path: str | Path) -> dict[str, Any
         for r in rows
     )
     escalated = sum(r["status"] == "needs_review" for r in rows)
+    reported = sum(r["status"] == "gap" for r in rows)
 
     def ratio(a: int, b: int) -> float | None:
         return round(a / b, 3) if b else None
 
+    precision, recall = ratio(caught_strict, reported), ratio(caught_strict, len(gaps))
+    f1 = ratio(2 * caught_strict, reported + len(gaps))  # 2TP / (2TP + FP + FN)
+
     return {
         "items": len(expected),
         "missing_findings": missing,
-        "gap_recall_strict": ratio(caught_strict, len(gaps)),
+        "gap_recall_strict": recall,
+        "gap_precision": precision,
+        "gap_f1": f1,
         "gap_recall_with_review": ratio(caught_lenient, len(gaps)),
         "false_alarm_rate": ratio(false_alarms, len(compliant)),
         "exact_accuracy": ratio(correct, len(rows)),

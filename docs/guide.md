@@ -86,6 +86,22 @@ earlier Decider run; `--skip-llm` runs Decider only.
 The LLM side sends section text to Bedrock **without redaction**, so it needs `--send-to-bedrock` and
 should only see synthetic or public documents.
 
+### Rubric LLM-as-judge for fixes and evidence
+
+Verdicts are scored against labels; the generated text is not. A second model from another vendor grades each
+gap's fix and evidence quote from 1 to 5 on five criteria: resolves the gap, grounded in the rule
+and evidence, actionable, safe, and whether the quote really shows the problem.
+
+```bash
+shodhaka run --pack rule-packs/acme-arch.yaml --docs samples/acme-arch/visible --out out/visible-bedrock --bedrock
+shodhaka run --pack rule-packs/acme-arch.yaml --docs samples/acme-arch/visible --out out/visible-offline
+shodhaka judge out/visible-bedrock/report.json out/visible-offline/report.json \
+  --pack rule-packs/acme-arch.yaml --model openai.gpt-oss-120b-1:0 --region <region> --out out/judge
+```
+
+This compares Nova Lite's fixes with the rule owner's own fix hints. The judge sees the redacted
+evidence and fix only. Results land in `out/judge/judge.md`, `judge.json` and `judge.svg`.
+
 ### Retrieval (optional)
 
 By default every section is checked against every rule. For long documents a local ranker can

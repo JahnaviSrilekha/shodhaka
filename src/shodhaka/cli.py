@@ -6,6 +6,7 @@
     shodhaka run --pack general.yaml --project-pack payments.yaml --docs ...   # layered like the UI
     shodhaka serve                                  # organisations, projects and review UI on :8000
     shodhaka eval out/visible/report.json samples/acme-arch/visible/expected.json
+    shodhaka judge out/visible-bedrock/report.json --pack rule-packs/acme-arch.yaml --model <judge model>
 """
 
 from __future__ import annotations
@@ -220,9 +221,33 @@ def cmd_bench(args: argparse.Namespace) -> int:
             "price_per_1k_tokens": {"input": args.price_in, "output": args.price_out}}
     write(out, rows, meta)
     print(table(rows))
-    print(f"\nwritten: {out / 'bench.md'} and {out / 'bench.json'}")
+    print(f"\nwritten: {out / 'bench.md'}, {out / 'bench.json'} and {out / 'bench.svg'}")
     if len(rows) == 2 and rows[1].get("unparsed_replies"):
         print(f"note: {rows[1]['unparsed_replies']} LLM replies could not be parsed and were counted as unsure (0.5)")
+    return 0
+
+
+def cmd_judge(args: argparse.Namespace) -> int:
+    from shodhaka.evaluation.judge import Judge, judge_report, load, table, write
+
+    try:
+        pack, _ = _layered_pack(args.pack, args.project_pack or [])
+    except RulePackError as exc:
+        print(exc, file=sys.stderr)
+        return 1
+    judge = Judge(args.model, args.region)
+    results = []
+    for report in load(args.reports):
+        result = judge_report(report, pack, judge)
+        print(f"{result['system']}: {result['graded']} of {result['findings']} gaps graded", file=sys.stderr)
+        results.append(result)
+    meta = {"reports": args.reports, "judge_model": args.model, "region": args.region,
+            "calls": judge.calls, "unparsed": judge.failures,
+            "input_tokens": judge.input_tokens, "output_tokens": judge.output_tokens}
+    write(Path(args.out), results, meta)
+    print(table(results))
+    print(f"\nwritten: {Path(args.out) / 'judge.md'}, judge.json and judge.svg "
+          f"({judge.calls} calls, {judge.input_tokens:,} input / {judge.output_tokens:,} output tokens)")
     return 0
 
 
@@ -323,6 +348,15 @@ def main(argv: list[str] | None = None) -> int:
                    help="confirm that section text may go to Bedrock unredacted (synthetic or public documents only)")
     b.add_argument("--skip-llm", action="store_true")
     b.set_defaults(func=cmd_bench)
+
+    j = sub.add_parser("judge", help="rubric LLM-as-judge for fixes and evidence quotes (redacted, via Bedrock)")
+    j.add_argument("reports", nargs="+", help="report.json files, e.g. one run with --bedrock and one without")
+    j.add_argument("--pack", required=True, action="append")
+    j.add_argument("--project-pack", action="append")
+    j.add_argument("--model", required=True, help="judge model or inference profile, e.g. a Claude Sonnet profile id")
+    j.add_argument("--region", default=DEFAULT_REGION)
+    j.add_argument("--out", default="out/judge")
+    j.set_defaults(func=cmd_judge)
 
     sv = sub.add_parser("serve", help="start the review UI and its API (local only)")
     sv.add_argument("--pack-dir", default="rule-packs", help="built-in packs offered as templates")

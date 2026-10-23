@@ -25,14 +25,24 @@ approves.
 
 On the synthetic sample sets, gate at 0.75 (full tables in [docs/results/benchmark.md](docs/results/benchmark.md)):
 
+![Accuracy, gap precision, recall and F1 for Decider 2B and Nova Lite](docs/results/accuracy-f1.svg)
+
+![Task completion, tool effectiveness, step efficiency and reasoning quality](docs/results/agent-metrics.svg)
+
 | | Decider 2B (local) | Nova Lite (Bedrock) |
 |---|---|---|
 | Exact agreement, tuning set (19 checks) | 89.5% | 89.5% |
+| Gap F1, tuning set | 94.1% | 88.9% |
+| Reasoning quality (committed verdicts that were right) | 91.7% | 84.6% |
+| Task completion without a person | 94.7% | 100% |
 | False alarms | 0% | 11.1% |
 | Sent to a person | 5.3% | 0% |
 | Held-out set (7 checks) | 100% | 100% |
 | Median latency per request | 736 ms | 731 ms |
 | Cost per 1,000 requests | $0 | $0.042 |
+
+A rubric LLM-as-judge (gpt-oss-120b on Bedrock) scored the evidence Decider quoted 5.0 of 5 on every
+gap, and Nova Lite's fixes 4.8 overall, level with the rule owner's hand-written fix hints.
 
 ## Quick start
 

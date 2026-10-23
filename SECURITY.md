@@ -37,6 +37,8 @@ Only when fixes are drafted (`--bedrock`), and only for gaps:
    remain. Every allowed call is logged with its size.
 3. The placeholders are restored locally when the fix comes back.
 
+`shodhaka judge` sends each gap's evidence and fix to the judge model, redacted the same way.
+
 The benchmark (`shodhaka bench`) is the exception: to compare models fairly it sends section text
 unredacted, so it only runs with `--send-to-bedrock` and is meant for synthetic or public documents.
 

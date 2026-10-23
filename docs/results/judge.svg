@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 606 358" width="606" height="358" role="img" aria-label="Rubric LLM-as-judge: fix and evidence quality"><style>
+  .surface { fill: #fcfcfb } .title { fill: #0b0b0b; font: 600 15px system-ui, sans-serif }
+  .label { fill: #52514e; font: 12px system-ui, sans-serif } .value { fill: #0b0b0b; font: 11px system-ui, sans-serif }
+  .grid { stroke: #e4e3df; stroke-width: 1 } .axis { stroke: #a8a7a1; stroke-width: 1 }
+  .s0 { fill: #2a78d6 } .s1 { fill: #eb6834 }
+  @media (prefers-color-scheme: dark) {
+    .surface { fill: #1a1a19 } .title, .value { fill: #f0efec } .label { fill: #c3c2b7 }
+    .grid { stroke: #33322f } .axis { stroke: #6b6a65 } .s0 { fill: #3987e5 } .s1 { fill: #d95926 }
+  }
+</style>
+<rect class="surface" width="606" height="358" rx="8"/>
+<text class="title" x="44" y="26">Rubric LLM-as-judge: fix and evidence quality</text>
+<rect class="s0" x="44" y="38" width="12" height="12" rx="3"/><text class="label" x="62" y="48">Fixes drafted by Nova Lite</text>
+<rect class="s1" x="250" y="38" width="12" height="12" rx="3"/><text class="label" x="268" y="48">Rule-owner fix hints (offline)</text>
+<line class="axis" x1="44" x2="566" y1="294.0" y2="294.0"/>
+<text class="label" x="36" y="298.0" text-anchor="end">0</text>
+<line class="grid" x1="44" x2="566" y1="256.0" y2="256.0"/>
+<text class="label" x="36" y="260.0" text-anchor="end">1</text>
+<line class="grid" x1="44" x2="566" y1="218.0" y2="218.0"/>
+<text class="label" x="36" y="222.0" text-anchor="end">2</text>
+<line class="grid" x1="44" x2="566" y1="180.0" y2="180.0"/>
+<text class="label" x="36" y="184.0" text-anchor="end">3</text>
+<line class="grid" x1="44" x2="566" y1="142.0" y2="142.0"/>
+<text class="label" x="36" y="146.0" text-anchor="end">4</text>
+<line class="grid" x1="44" x2="566" y1="104.0" y2="104.0"/>
+<text class="label" x="36" y="108.0" text-anchor="end">5</text>
+<text class="label" x="44" y="78">Mean score per criterion (1-5), 5 gaps each, judged by gpt-oss-120b</text>
+<path class="s0" d="M62.0,294.0 V108.0 Q62.0,104.0 66.0,104.0 H88.0 Q92.0,104.0 92.0,108.0 V294.0 Z"><title>Fixes drafted by Nova Lite, Resolves the gap: 5.0</title></path>
+<text class="value" x="77.0" y="99.0" text-anchor="middle">5.0</text>
+<path class="s1" d="M94.0,294.0 V108.0 Q94.0,104.0 98.0,104.0 H120.0 Q124.0,104.0 124.0,108.0 V294.0 Z"><title>Rule-owner fix hints (offline), Resolves the gap: 5.0</title></path>
+<text class="value" x="109.0" y="99.0" text-anchor="middle">5.0</text>
+<text class="label" y="312" text-anchor="middle"><tspan x="93.0" dy="0">Resolves</tspan><tspan x="93.0" dy="14">the gap</tspan></text>
+<path class="s0" d="M146.0,294.0 V115.6 Q146.0,111.6 150.0,111.6 H172.0 Q176.0,111.6 176.0,115.6 V294.0 Z"><title>Fixes drafted by Nova Lite, Grounded: 4.8</title></path>
+<text class="value" x="161.0" y="106.6" text-anchor="middle">4.8</text>
+<path class="s1" d="M178.0,294.0 V108.0 Q178.0,104.0 182.0,104.0 H204.0 Q208.0,104.0 208.0,108.0 V294.0 Z"><title>Rule-owner fix hints (offline), Grounded: 5.0</title></path>
+<text class="value" x="193.0" y="99.0" text-anchor="middle">5.0</text>
+<text class="label" y="312" text-anchor="middle"><tspan x="177.0" dy="0">Grounded</tspan></text>
+<path class="s0" d="M230.0,294.0 V138.4 Q230.0,134.4 234.0,134.4 H256.0 Q260.0,134.4 260.0,138.4 V294.0 Z"><title>Fixes drafted by Nova Lite, Actionable: 4.2</title></path>
+<text class="value" x="245.0" y="129.4" text-anchor="middle">4.2</text>
+<path class="s1" d="M262.0,294.0 V146.0 Q262.0,142.0 266.0,142.0 H288.0 Q292.0,142.0 292.0,146.0 V294.0 Z"><title>Rule-owner fix hints (offline), Actionable: 4.0</title></path>
+<text class="value" x="277.0" y="137.0" text-anchor="middle">4.0</text>
+<text class="label" y="312" text-anchor="middle"><tspan x="261.0" dy="0">Actionable</tspan></text>
+<path class="s0" d="M314.0,294.0 V108.0 Q314.0,104.0 318.0,104.0 H340.0 Q344.0,104.0 344.0,108.0 V294.0 Z"><title>Fixes drafted by Nova Lite, Safe: 5.0</title></path>
+<text class="value" x="329.0" y="99.0" text-anchor="middle">5.0</text>
+<path class="s1" d="M346.0,294.0 V108.0 Q346.0,104.0 350.0,104.0 H372.0 Q376.0,104.0 376.0,108.0 V294.0 Z"><title>Rule-owner fix hints (offline), Safe: 5.0</title></path>
+<text class="value" x="361.0" y="99.0" text-anchor="middle">5.0</text>
+<text class="label" y="312" text-anchor="middle"><tspan x="345.0" dy="0">Safe</tspan></text>
+<path class="s0" d="M398.0,294.0 V108.0 Q398.0,104.0 402.0,104.0 H424.0 Q428.0,104.0 428.0,108.0 V294.0 Z"><title>Fixes drafted by Nova Lite, Evidence fits: 5.0</title></path>
+<text class="value" x="413.0" y="99.0" text-anchor="middle">5.0</text>
+<path class="s1" d="M430.0,294.0 V108.0 Q430.0,104.0 434.0,104.0 H456.0 Q460.0,104.0 460.0,108.0 V294.0 Z"><title>Rule-owner fix hints (offline), Evidence fits: 5.0</title></path>
+<text class="value" x="445.0" y="99.0" text-anchor="middle">5.0</text>
+<text class="label" y="312" text-anchor="middle"><tspan x="429.0" dy="0">Evidence</tspan><tspan x="429.0" dy="14">fits</tspan></text>
+<path class="s0" d="M482.0,294.0 V115.6 Q482.0,111.6 486.0,111.6 H508.0 Q512.0,111.6 512.0,115.6 V294.0 Z"><title>Fixes drafted by Nova Lite, Overall: 4.8</title></path>
+<text class="value" x="497.0" y="106.6" text-anchor="middle">4.8</text>
+<path class="s1" d="M514.0,294.0 V115.6 Q514.0,111.6 518.0,111.6 H540.0 Q544.0,111.6 544.0,115.6 V294.0 Z"><title>Rule-owner fix hints (offline), Overall: 4.8</title></path>
+<text class="value" x="529.0" y="106.6" text-anchor="middle">4.8</text>
+<text class="label" y="312" text-anchor="middle"><tspan x="513.0" dy="0">Overall</tspan></text>
+</svg>

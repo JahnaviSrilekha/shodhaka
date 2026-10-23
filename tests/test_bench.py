@@ -80,3 +80,42 @@ def test_cli_reuses_a_decider_report_without_new_calls(pack, visible_docs, scrip
     saved = json.loads((tmp_path / "b" / "bench.json").read_text())
     assert saved["threshold"] == 0.75 and saved["results"][0]["exact_accuracy"] is not None
     assert (tmp_path / "b" / "bench.md").read_text().startswith("# Decider vs")
+
+
+def test_precision_and_f1_count_gap_as_positive(tmp_path):
+    report = {"findings": [
+        {"rule_id": "R1", "document": "a.md", "status": "gap", "decided_by": "decider", "confidence": 0.9},
+        {"rule_id": "R2", "document": "a.md", "status": "not_applicable", "decided_by": "decider", "confidence": 0.9},
+        {"rule_id": "R3", "document": "a.md", "status": "gap", "decided_by": "decider", "confidence": 0.9},
+    ]}
+    expected = {"expected": [{"rule": "R1", "file": "a.md", "verdict": "gap"},
+                             {"rule": "R2", "file": "a.md", "verdict": "gap"},
+                             {"rule": "R3", "file": "a.md", "verdict": "compliant"}]}
+    path = tmp_path / "expected.json"
+    path.write_text(json.dumps(expected))
+    scores = evaluate(report, path)
+    assert scores["gap_precision"] == 0.5 and scores["gap_recall_strict"] == 0.5 and scores["gap_f1"] == 0.5
+
+
+def test_chart_has_a_bar_per_system_and_metric():
+    from shodhaka.evaluation import chart
+
+    rows = [{"system": "A", "exact_accuracy": 0.9, "gap_precision": 1.0, "gap_recall_strict": 0.8, "gap_f1": 0.889},
+            {"system": "B", "exact_accuracy": 0.9, "gap_precision": 0.8, "gap_recall_strict": 0.8, "gap_f1": 0.8}]
+    out = chart.svg([("Set", rows)])
+    assert out.startswith("<svg") and out.count("<path") == 8 and "88.9" in out and "prefers-color-scheme" in out
+
+
+def test_agent_metrics_follow_their_definitions():
+    from shodhaka.evaluation.agent_metrics import agent_metrics
+
+    report = {"decider": {"calls": 4}, "retrieval": {"pairs_total": 10}, "findings": [
+        {"status": "gap", "decided_by": "decider", "evidence": [{"text": "x"}]},
+        {"status": "gap", "decided_by": "decider", "evidence": []}]}
+    scores = {"rows": [
+        {"expected": "gap", "status": "gap", "decided_by": "decider"},
+        {"expected": "compliant", "status": "gap", "decided_by": "decider"},
+        {"expected": "compliant", "status": "covered", "decided_by": "code"},
+        {"expected": "gap", "status": "needs_review", "decided_by": "decider"}]}
+    m = agent_metrics(report, scores)
+    assert m == {"task_completion": 0.75, "tool_effectiveness": 0.75, "step_efficiency": 0.6, "reasoning_quality": 0.5}
