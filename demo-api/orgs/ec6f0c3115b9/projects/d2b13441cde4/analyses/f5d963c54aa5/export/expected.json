@@ -1,0 +1,11 @@
+{
+  "pack": "Acme Bank (demo) / Loyalty platform",
+  "note": "Human review in the UI, analysis f5d963c54aa5.",
+  "expected": [
+    {
+      "rule": "ARCH-01",
+      "file": "adr-005-loyalty-points.md",
+      "verdict": "gap"
+    }
+  ]
+}

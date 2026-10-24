@@ -1,0 +1,1 @@
+{"path":"billing-service.Dockerfile","kind":"dockerfile","text":"FROM eclipse-temurin:latest\nWORKDIR /app\nCOPY build/libs/billing-service.jar app.jar\nENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]\n","original_format":"dockerfile","edited":false,"sections":[{"id":"s1","heading":"billing-service.Dockerfile","start_line":1}]}

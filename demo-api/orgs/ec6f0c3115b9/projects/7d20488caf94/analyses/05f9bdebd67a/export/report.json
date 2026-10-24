@@ -1,0 +1,1755 @@
+{
+  "run_id": "303cb9fff68f",
+  "created_at": "2026-10-23T23:12:50+00:00",
+  "pack": {
+    "id": "effective",
+    "version": "dora@0.1",
+    "title": "Acme Bank (demo) / DORA compliance"
+  },
+  "threshold": 0.75,
+  "strategy": "two-stage",
+  "retrieval": {
+    "method": "none",
+    "top_k": null,
+    "pairs_checked": 162,
+    "pairs_total": 162
+  },
+  "documents": [
+    "dora-ict-risk-management-framework.md",
+    "ict-incident-and-continuity-policy.md"
+  ],
+  "mode": "per-document",
+  "design_set": [],
+  "summary": {
+    "gap": 5,
+    "needs_review": 3,
+    "covered": 7,
+    "not_applicable": 3
+  },
+  "decider": {
+    "calls": 64,
+    "questions": 221,
+    "input_tokens": 27252,
+    "latency_ms_p50": 766.4,
+    "latency_ms_p95": 2566.3
+  },
+  "egress": {
+    "bedrock_calls": 15,
+    "bytes_sent": 13970,
+    "blocked": 0,
+    "guardrail": "lhgb4l81bseg",
+    "guardrail_interventions": 0,
+    "input_tokens": 10362,
+    "output_tokens": 1508,
+    "guardrail_text_units": 23,
+    "model": "eu.amazon.nova-lite-v1:0",
+    "log": [
+      {
+        "finding": "DORA-07:dora-ict-risk-management-framework.md",
+        "allowed": true,
+        "bytes": 676,
+        "text": "Rule DORA-07: Digital operational resilience testing\nRequirement: A risk-based digital operational resilience testing programme is run, with critical systems tested at least yearly; significant entities also perform threat-led penetration testing at least every three years (Art. 24-26).\nProblem found: gap in section 'Resilience testing'\nEvidence (redacted): There is no fixed testing programme, and the card authorisation and settlement systems have not had a penetration test in the last three years.\nHint from the rule owner: Set up a yearly testing programme for critical ICT systems and plan threat-led penetration testing every three years if the entity is significant."
+      },
+      {
+        "finding": "DORA-07:dora-ict-risk-management-framework.md",
+        "allowed": true,
+        "bytes": 1325,
+        "text": "Rule DORA-07: Digital operational resilience testing\nRequirement: A risk-based digital operational resilience testing programme is run, with critical systems tested at least yearly; significant entities also perform threat-led penetration testing at least every three years (Art. 24-26).\nProblem found: gap in section 'Resilience testing'\nEvidence (redacted): There is no fixed testing programme, and the card authorisation and settlement systems have not had a penetration test in the last three years.\nHint from the rule owner: Set up a yearly testing programme for critical ICT systems and plan threat-led penetration testing every three years if the entity is significant.\n<thinking>Based on the evidence, it appears that there is no established testing program for critical systems. To comply with Rule DORA-07, I need to propose a fix that establishes a yearly testing program for critical ICT systems and plans for threat-led penetration testing every three years if the entity is significant.</thinking>\n\n{\"fix\": \"Implement a yearly testing program for all critical ICT systems to ensure they are regularly assessed for resilience. For significant entities, plan and execute threat-led penetration testing on critical systems every three years to identify and mitigate potential threats.\"}\n[{\"text\": \"Fix recorded.\"}]"
+      },
+      {
+        "finding": "DORA-09:dora-ict-risk-management-framework.md",
+        "allowed": true,
+        "bytes": 552,
+        "text": "Rule DORA-09: Exit strategies for critical ICT providers\nRequirement: For ICT services that support critical or important functions, documented and tested exit strategies exist so the entity can leave a provider without disruption (Art. 28(8)).\nProblem found: gap in section 'Exit from ICT providers'\nEvidence (redacted): No exit plan has been written or tested; the team will work one out if a provider ever has to be replaced.\nHint from the rule owner: Write and test an exit plan for each ICT provider that supports a critical or important function."
+      },
+      {
+        "finding": "DORA-09:dora-ict-risk-management-framework.md",
+        "allowed": true,
+        "bytes": 1134,
+        "text": "Rule DORA-09: Exit strategies for critical ICT providers\nRequirement: For ICT services that support critical or important functions, documented and tested exit strategies exist so the entity can leave a provider without disruption (Art. 28(8)).\nProblem found: gap in section 'Exit from ICT providers'\nEvidence (redacted): No exit plan has been written or tested; the team will work one out if a provider ever has to be replaced.\nHint from the rule owner: Write and test an exit plan for each ICT provider that supports a critical or important function.\n<thinking>Based on the rule and the problem found, I need to propose a fix that includes writing and testing an exit plan for each ICT provider that supports a critical or important function. This should address the gap by ensuring there are documented and tested exit strategies in place.</thinking>\n\n{\"fix\": \"Develop and document a detailed exit plan for each critical ICT provider, including all necessary steps and resources required. Conduct regular testing of these exit plans to ensure they are effective and can be executed without disruption.\"}\n[{\"text\": \"Fix recorded.\"}]"
+      },
+      {
+        "finding": "DORA-01:ict-incident-and-continuity-policy.md",
+        "allowed": true,
+        "bytes": 473,
+        "text": "Rule DORA-01: Management body owns ICT risk\nRequirement: The management body defines, approves and oversees the ICT risk management framework and bears final responsibility for it (Art. 5).\nProblem found: gap in section 'Governance'\nEvidence (redacted): The Head of IT Operations owns this policy and approves changes.\nHint from the rule owner: State that the management body approves the ICT risk management framework, reviews it at least yearly and is accountable for it."
+      },
+      {
+        "finding": "DORA-01:ict-incident-and-continuity-policy.md",
+        "allowed": true,
+        "bytes": 1124,
+        "text": "Rule DORA-01: Management body owns ICT risk\nRequirement: The management body defines, approves and oversees the ICT risk management framework and bears final responsibility for it (Art. 5).\nProblem found: gap in section 'Governance'\nEvidence (redacted): The Head of IT Operations owns this policy and approves changes.\nHint from the rule owner: State that the management body approves the ICT risk management framework, reviews it at least yearly and is accountable for it.\n<thinking>Based on the evidence provided, the Head of IT Operations currently owns the ICT risk management framework, which violates the rule. To resolve this gap, the management body must be explicitly stated as the owners and approvers of the framework, and it must be clear that they review and are accountable for it. This will ensure compliance with Rule DORA-01.</thinking>\n\n{\"fix\": \"The management body approves the ICT risk management framework, reviews it at least yearly, and is accountable for it. This includes overseeing all changes and ensuring the framework remains aligned with organizational objectives.\"}\n[{\"text\": \"Fix recorded.\"}]"
+      },
+      {
+        "finding": "DORA-02:ict-incident-and-continuity-policy.md",
+        "allowed": true,
+        "bytes": 584,
+        "text": "Rule DORA-02: Documented ICT risk management framework\nRequirement: A documented ICT risk management framework covers strategies, policies, procedures and tools to protect ICT assets, and is reviewed at least once a year and after major incidents (Art. 6).\nProblem found: possible gap in section 'Governance' below the 0.75 confidence threshold\nEvidence (redacted): The policy is reviewed when the IT department considers it necessary.\nHint from the rule owner: Describe the ICT risk management framework and commit to a review at least once a year and after every major ICT incident."
+      },
+      {
+        "finding": "DORA-02:ict-incident-and-continuity-policy.md",
+        "allowed": true,
+        "bytes": 1247,
+        "text": "Rule DORA-02: Documented ICT risk management framework\nRequirement: A documented ICT risk management framework covers strategies, policies, procedures and tools to protect ICT assets, and is reviewed at least once a year and after major incidents (Art. 6).\nProblem found: possible gap in section 'Governance' below the 0.75 confidence threshold\nEvidence (redacted): The policy is reviewed when the IT department considers it necessary.\nHint from the rule owner: Describe the ICT risk management framework and commit to a review at least once a year and after every major ICT incident.\n<thinking>The rule requires a documented ICT risk management framework with a specific review schedule. The evidence suggests that the review happens only when the IT department considers it necessary, which is not frequent enough. To fix this, I need to propose a concrete fix that includes a formal review schedule of at least once a year and after every major ICT incident.</thinking>\n\n{\"fix\": \"Establish a documented ICT risk management framework that includes specific strategies, policies, procedures, and tools to protect ICT assets. Commit to reviewing this framework at least once a year and after every major ICT incident.\"}\n[{\"text\": \"Fix recorded.\"}]"
+      },
+      {
+        "finding": "DORA-04:ict-incident-and-continuity-policy.md",
+        "allowed": true,
+        "bytes": 768,
+        "text": "Rule DORA-04: Major ICT incidents classified and reported\nRequirement: ICT-related incidents are recorded and classified; major incidents are reported to the competent authority with an initial notification, an intermediate report and a final report within the deadlines of the reporting technical standards (Art. 17-19).\nProblem found: gap in section 'Incident classification'\nEvidence (redacted): Every ICT incident is logged in the service desk tool and given a priority from P1 to P4 based on the number of affected customers and the duration of the outage.\nHint from the rule owner: Add an incident classification scheme and a procedure to send initial, intermediate and final reports of major ICT incidents to the competent authority on the regulatory deadlines."
+      },
+      {
+        "finding": "DORA-04:ict-incident-and-continuity-policy.md",
+        "allowed": true,
+        "bytes": 1846,
+        "text": "Rule DORA-04: Major ICT incidents classified and reported\nRequirement: ICT-related incidents are recorded and classified; major incidents are reported to the competent authority with an initial notification, an intermediate report and a final report within the deadlines of the reporting technical standards (Art. 17-19).\nProblem found: gap in section 'Incident classification'\nEvidence (redacted): Every ICT incident is logged in the service desk tool and given a priority from P1 to P4 based on the number of affected customers and the duration of the outage.\nHint from the rule owner: Add an incident classification scheme and a procedure to send initial, intermediate and final reports of major ICT incidents to the competent authority on the regulatory deadlines.\n<thinking>Based on the rule and the evidence, the current system only assigns a priority to incidents based on the number of affected customers and the duration of the outage. However, it lacks a formal incident classification scheme and a procedure for reporting major incidents to the competent authority. To meet the requirement, I need to propose a concrete fix that includes both an incident classification scheme and a reporting procedure for major incidents.</thinking>\n\n<thinking>I will now propose a concrete fix that includes both an incident classification scheme and a reporting procedure for major incidents.</thinking>\n\n{\"fix\": \"Implement an incident classification scheme that categorizes incidents into levels such as Critical, High, Medium, and Low. Ensure that all major incidents (Critical and High) are reported to the competent authority with an initial notification within 24 hours, an intermediate report within 72 hours, and a final report within 30 days. This will ensure compliance with the reporting technical standards.\"}\n[{\"text\": \"Fix recorded.\"}]"
+      },
+      {
+        "finding": "DORA-05:ict-incident-and-continuity-policy.md",
+        "allowed": true,
+        "bytes": 482,
+        "text": "Rule DORA-05: ICT business continuity with tested recovery\nRequirement: An ICT business continuity policy with response and recovery plans exists, sets recovery objectives, and the plans are tested regularly (Art. 11).\nProblem found: gap in section 'Business continuity'\nEvidence (redacted): The recovery plan was last exercised in 2023.\nHint from the rule owner: Define recovery time and recovery point objectives for critical functions and test the recovery plans at least yearly."
+      },
+      {
+        "finding": "DORA-05:ict-incident-and-continuity-policy.md",
+        "allowed": true,
+        "bytes": 1204,
+        "text": "Rule DORA-05: ICT business continuity with tested recovery\nRequirement: An ICT business continuity policy with response and recovery plans exists, sets recovery objectives, and the plans are tested regularly (Art. 11).\nProblem found: gap in section 'Business continuity'\nEvidence (redacted): The recovery plan was last exercised in 2023.\nHint from the rule owner: Define recovery time and recovery point objectives for critical functions and test the recovery plans at least yearly.\n<thinking>Based on the evidence and hint, the recovery plans were last tested in 2023 and no recent testing has been done. The rule requires regular testing of recovery plans with defined recovery time and recovery point objectives. I need to define these objectives and ensure that recovery plans are tested at least once a year.</thinking>\n\n<thinking>The rule owner has given a clear hint on what needs to be done. I need to create a fix that defines the recovery objectives and mandates annual testing of the recovery plans.</thinking>\n\n{\"fix\": \"Define recovery time and recovery point objectives for critical functions, and ensure that the recovery plans are tested at least once a year.\"}\n[{\"text\": \"Fix recorded.\"}]"
+      },
+      {
+        "finding": "DORA-06:ict-incident-and-continuity-policy.md",
+        "allowed": true,
+        "bytes": 553,
+        "text": "Rule DORA-06: Backups and restoration tested\nRequirement: Backup policies define scope and frequency based on criticality, and restoration from backups is tested periodically, using systems segregated from the source (Art. 12).\nProblem found: possible gap in section 'Backups' below the 0.75 confidence threshold\nEvidence (redacted): Production databases are backed up every night to a separate data centre.\nHint from the rule owner: Define what is backed up and how often per criticality, keep backups segregated, and test restores on a fixed schedule."
+      },
+      {
+        "finding": "DORA-06:ict-incident-and-continuity-policy.md",
+        "allowed": true,
+        "bytes": 1428,
+        "text": "Rule DORA-06: Backups and restoration tested\nRequirement: Backup policies define scope and frequency based on criticality, and restoration from backups is tested periodically, using systems segregated from the source (Art. 12).\nProblem found: possible gap in section 'Backups' below the 0.75 confidence threshold\nEvidence (redacted): Production databases are backed up every night to a separate data centre.\nHint from the rule owner: Define what is backed up and how often per criticality, keep backups segregated, and test restores on a fixed schedule.\n<thinking>The architecture rule gap concerns the lack of explicit definitions for what is backed up, how often, and the criticality level of these backups. Additionally, the rule emphasizes the segregation of backup storage and the periodic testing of restores. The evidence mentions that production databases are backed up nightly to a separate data center, but it does not specify the scope, frequency based on criticality, or the testing of restorations. Therefore, I need to address these points in my fix.</thinking>\n\n{\"fix\": \"Define backup policies that specify what is backed up and the frequency based on the criticality of the data. Ensure that backups are stored in a segregated system from the production environment. Implement a periodic testing schedule for restoration from these backups to ensure data integrity and availability.\"}\n[{\"text\": \"Fix recorded.\"}]"
+      },
+      {
+        "finding": "DORA-08:ict-incident-and-continuity-policy.md",
+        "allowed": true,
+        "bytes": 574,
+        "text": "Rule DORA-08: ICT third-party risk and register\nRequirement: ICT third-party risk is managed under a strategy and policy; a register of information on all contractual arrangements with ICT third-party service providers is maintained (Art. 28).\nProblem found: possible gap in section 'Third-party providers' below the 0.75 confidence threshold\nEvidence (redacted): Card processing and cloud hosting are outsourced to external ICT providers.\nHint from the rule owner: Adopt an ICT third-party risk policy and keep a register of information covering every ICT service contract."
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "DORA-01:dora-ict-risk-management-framework.md",
+      "rule_id": "DORA-01",
+      "rule_title": "Management body owns ICT risk",
+      "severity": "high",
+      "document": "dora-ict-risk-management-framework.md",
+      "status": "covered",
+      "decided_by": "decider",
+      "confidence": 0.95,
+      "evidence": [],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose and scope",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.896
+        },
+        {
+          "section": "s3",
+          "heading": "Governance and accountability",
+          "option": "meets-requirement",
+          "verdict": "compliant",
+          "confidence": 0.95
+        },
+        {
+          "section": "s4",
+          "heading": "Framework and review",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.817
+        },
+        {
+          "section": "s5",
+          "heading": "ICT asset inventory",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.904
+        },
+        {
+          "section": "s6",
+          "heading": "Incident management and reporting",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.69
+        },
+        {
+          "section": "s7",
+          "heading": "Business continuity and recovery",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.877
+        },
+        {
+          "section": "s8",
+          "heading": "Backups and restoration",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.919
+        },
+        {
+          "section": "s9",
+          "heading": "Third-party ICT risk",
+          "option": "meets-requirement",
+          "verdict": "compliant",
+          "confidence": 0.658
+        },
+        {
+          "section": "s10",
+          "heading": "Resilience testing",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.915
+        },
+        {
+          "section": "s11",
+          "heading": "Exit from ICT providers",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.928
+        },
+        {
+          "section": "s12",
+          "heading": "Change management",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.639
+        }
+      ],
+      "reason": "covered by section 'Governance and accountability'",
+      "scope": "document",
+      "suggested_fix": "",
+      "fix_source": "",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-02:dora-ict-risk-management-framework.md",
+      "rule_id": "DORA-02",
+      "rule_title": "Documented ICT risk management framework",
+      "severity": "high",
+      "document": "dora-ict-risk-management-framework.md",
+      "status": "covered",
+      "decided_by": "decider",
+      "confidence": 0.967,
+      "evidence": [],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose and scope",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.673
+        },
+        {
+          "section": "s3",
+          "heading": "Governance and accountability",
+          "option": "meets-requirement",
+          "verdict": "compliant",
+          "confidence": 0.55
+        },
+        {
+          "section": "s4",
+          "heading": "Framework and review",
+          "option": "meets-requirement",
+          "verdict": "compliant",
+          "confidence": 0.967
+        },
+        {
+          "section": "s5",
+          "heading": "ICT asset inventory",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.703
+        },
+        {
+          "section": "s6",
+          "heading": "Incident management and reporting",
+          "option": "meets-requirement",
+          "verdict": "compliant",
+          "confidence": 0.524
+        },
+        {
+          "section": "s7",
+          "heading": "Business continuity and recovery",
+          "option": "meets-requirement",
+          "verdict": "compliant",
+          "confidence": 0.67
+        },
+        {
+          "section": "s8",
+          "heading": "Backups and restoration",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.612
+        },
+        {
+          "section": "s9",
+          "heading": "Third-party ICT risk",
+          "option": "meets-requirement",
+          "verdict": "compliant",
+          "confidence": 0.59
+        },
+        {
+          "section": "s10",
+          "heading": "Resilience testing",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.518
+        },
+        {
+          "section": "s11",
+          "heading": "Exit from ICT providers",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.689
+        },
+        {
+          "section": "s12",
+          "heading": "Change management",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.57
+        }
+      ],
+      "reason": "covered by section 'Framework and review'; 'ICT asset inventory' does not mention it",
+      "scope": "document",
+      "suggested_fix": "",
+      "fix_source": "",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-03:dora-ict-risk-management-framework.md",
+      "rule_id": "DORA-03",
+      "rule_title": "ICT assets identified and classified",
+      "severity": "medium",
+      "document": "dora-ict-risk-management-framework.md",
+      "status": "covered",
+      "decided_by": "decider",
+      "confidence": 0.916,
+      "evidence": [],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose and scope",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.93
+        },
+        {
+          "section": "s3",
+          "heading": "Governance and accountability",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.952
+        },
+        {
+          "section": "s4",
+          "heading": "Framework and review",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.943
+        },
+        {
+          "section": "s5",
+          "heading": "ICT asset inventory",
+          "option": "meets-requirement",
+          "verdict": "compliant",
+          "confidence": 0.916
+        },
+        {
+          "section": "s6",
+          "heading": "Incident management and reporting",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.883
+        },
+        {
+          "section": "s7",
+          "heading": "Business continuity and recovery",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.931
+        },
+        {
+          "section": "s8",
+          "heading": "Backups and restoration",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.898
+        },
+        {
+          "section": "s9",
+          "heading": "Third-party ICT risk",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.884
+        },
+        {
+          "section": "s10",
+          "heading": "Resilience testing",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.929
+        },
+        {
+          "section": "s11",
+          "heading": "Exit from ICT providers",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.942
+        },
+        {
+          "section": "s12",
+          "heading": "Change management",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.945
+        }
+      ],
+      "reason": "covered by section 'ICT asset inventory'",
+      "scope": "document",
+      "suggested_fix": "",
+      "fix_source": "",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-04:dora-ict-risk-management-framework.md",
+      "rule_id": "DORA-04",
+      "rule_title": "Major ICT incidents classified and reported",
+      "severity": "high",
+      "document": "dora-ict-risk-management-framework.md",
+      "status": "covered",
+      "decided_by": "decider",
+      "confidence": 0.927,
+      "evidence": [],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose and scope",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.873
+        },
+        {
+          "section": "s3",
+          "heading": "Governance and accountability",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.897
+        },
+        {
+          "section": "s4",
+          "heading": "Framework and review",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.903
+        },
+        {
+          "section": "s5",
+          "heading": "ICT asset inventory",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.887
+        },
+        {
+          "section": "s6",
+          "heading": "Incident management and reporting",
+          "option": "meets-requirement",
+          "verdict": "compliant",
+          "confidence": 0.927
+        },
+        {
+          "section": "s7",
+          "heading": "Business continuity and recovery",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.906
+        },
+        {
+          "section": "s8",
+          "heading": "Backups and restoration",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.913
+        },
+        {
+          "section": "s9",
+          "heading": "Third-party ICT risk",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.736
+        },
+        {
+          "section": "s10",
+          "heading": "Resilience testing",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.935
+        },
+        {
+          "section": "s11",
+          "heading": "Exit from ICT providers",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.947
+        },
+        {
+          "section": "s12",
+          "heading": "Change management",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.89
+        }
+      ],
+      "reason": "covered by section 'Incident management and reporting'",
+      "scope": "document",
+      "suggested_fix": "",
+      "fix_source": "",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-05:dora-ict-risk-management-framework.md",
+      "rule_id": "DORA-05",
+      "rule_title": "ICT business continuity with tested recovery",
+      "severity": "high",
+      "document": "dora-ict-risk-management-framework.md",
+      "status": "covered",
+      "decided_by": "decider",
+      "confidence": 0.976,
+      "evidence": [],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose and scope",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.898
+        },
+        {
+          "section": "s3",
+          "heading": "Governance and accountability",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.919
+        },
+        {
+          "section": "s4",
+          "heading": "Framework and review",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.933
+        },
+        {
+          "section": "s5",
+          "heading": "ICT asset inventory",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.929
+        },
+        {
+          "section": "s6",
+          "heading": "Incident management and reporting",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.897
+        },
+        {
+          "section": "s7",
+          "heading": "Business continuity and recovery",
+          "option": "meets-requirement",
+          "verdict": "compliant",
+          "confidence": 0.976
+        },
+        {
+          "section": "s8",
+          "heading": "Backups and restoration",
+          "option": "meets-requirement",
+          "verdict": "compliant",
+          "confidence": 0.939
+        },
+        {
+          "section": "s9",
+          "heading": "Third-party ICT risk",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.939
+        },
+        {
+          "section": "s10",
+          "heading": "Resilience testing",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.896
+        },
+        {
+          "section": "s11",
+          "heading": "Exit from ICT providers",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.831
+        },
+        {
+          "section": "s12",
+          "heading": "Change management",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.721
+        }
+      ],
+      "reason": "covered by section 'Business continuity and recovery'",
+      "scope": "document",
+      "suggested_fix": "",
+      "fix_source": "",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-06:dora-ict-risk-management-framework.md",
+      "rule_id": "DORA-06",
+      "rule_title": "Backups and restoration tested",
+      "severity": "medium",
+      "document": "dora-ict-risk-management-framework.md",
+      "status": "covered",
+      "decided_by": "decider",
+      "confidence": 0.915,
+      "evidence": [],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose and scope",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.934
+        },
+        {
+          "section": "s3",
+          "heading": "Governance and accountability",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.945
+        },
+        {
+          "section": "s4",
+          "heading": "Framework and review",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.94
+        },
+        {
+          "section": "s5",
+          "heading": "ICT asset inventory",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.933
+        },
+        {
+          "section": "s6",
+          "heading": "Incident management and reporting",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.942
+        },
+        {
+          "section": "s7",
+          "heading": "Business continuity and recovery",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.84
+        },
+        {
+          "section": "s8",
+          "heading": "Backups and restoration",
+          "option": "meets-requirement",
+          "verdict": "compliant",
+          "confidence": 0.915
+        },
+        {
+          "section": "s9",
+          "heading": "Third-party ICT risk",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.944
+        },
+        {
+          "section": "s10",
+          "heading": "Resilience testing",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.938
+        },
+        {
+          "section": "s11",
+          "heading": "Exit from ICT providers",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.953
+        },
+        {
+          "section": "s12",
+          "heading": "Change management",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.848
+        }
+      ],
+      "reason": "covered by section 'Backups and restoration'",
+      "scope": "document",
+      "suggested_fix": "",
+      "fix_source": "",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-07:dora-ict-risk-management-framework.md",
+      "rule_id": "DORA-07",
+      "rule_title": "Digital operational resilience testing",
+      "severity": "medium",
+      "document": "dora-ict-risk-management-framework.md",
+      "status": "gap",
+      "decided_by": "decider",
+      "confidence": 0.789,
+      "evidence": [
+        {
+          "section": "Resilience testing",
+          "text": "There is no fixed testing programme, and the card authorisation and settlement systems have not had a penetration test in the last three years.",
+          "confidence": 0.965
+        }
+      ],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose and scope",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.916
+        },
+        {
+          "section": "s3",
+          "heading": "Governance and accountability",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.924
+        },
+        {
+          "section": "s4",
+          "heading": "Framework and review",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.932
+        },
+        {
+          "section": "s5",
+          "heading": "ICT asset inventory",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.933
+        },
+        {
+          "section": "s6",
+          "heading": "Incident management and reporting",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.935
+        },
+        {
+          "section": "s7",
+          "heading": "Business continuity and recovery",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.647
+        },
+        {
+          "section": "s8",
+          "heading": "Backups and restoration",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.648
+        },
+        {
+          "section": "s9",
+          "heading": "Third-party ICT risk",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.918
+        },
+        {
+          "section": "s10",
+          "heading": "Resilience testing",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.789
+        },
+        {
+          "section": "s11",
+          "heading": "Exit from ICT providers",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.941
+        },
+        {
+          "section": "s12",
+          "heading": "Change management",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.885
+        }
+      ],
+      "reason": "gap in section 'Resilience testing'",
+      "scope": "document",
+      "suggested_fix": "Implement a yearly testing program for all critical ICT systems to ensure they are regularly assessed for resilience. For significant entities, plan and execute threat-led penetration testing on critical systems every three years to identify and mitigate potential threats.",
+      "fix_source": "bedrock",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-08:dora-ict-risk-management-framework.md",
+      "rule_id": "DORA-08",
+      "rule_title": "ICT third-party risk and register",
+      "severity": "high",
+      "document": "dora-ict-risk-management-framework.md",
+      "status": "covered",
+      "decided_by": "decider",
+      "confidence": 0.959,
+      "evidence": [],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose and scope",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.806
+        },
+        {
+          "section": "s3",
+          "heading": "Governance and accountability",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.931
+        },
+        {
+          "section": "s4",
+          "heading": "Framework and review",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.908
+        },
+        {
+          "section": "s5",
+          "heading": "ICT asset inventory",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.891
+        },
+        {
+          "section": "s6",
+          "heading": "Incident management and reporting",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.918
+        },
+        {
+          "section": "s7",
+          "heading": "Business continuity and recovery",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.937
+        },
+        {
+          "section": "s8",
+          "heading": "Backups and restoration",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.931
+        },
+        {
+          "section": "s9",
+          "heading": "Third-party ICT risk",
+          "option": "meets-requirement",
+          "verdict": "compliant",
+          "confidence": 0.959
+        },
+        {
+          "section": "s10",
+          "heading": "Resilience testing",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.9
+        },
+        {
+          "section": "s11",
+          "heading": "Exit from ICT providers",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.857
+        },
+        {
+          "section": "s12",
+          "heading": "Change management",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.912
+        }
+      ],
+      "reason": "covered by section 'Third-party ICT risk'; 'Exit from ICT providers' does not mention it",
+      "scope": "document",
+      "suggested_fix": "",
+      "fix_source": "",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-09:dora-ict-risk-management-framework.md",
+      "rule_id": "DORA-09",
+      "rule_title": "Exit strategies for critical ICT providers",
+      "severity": "medium",
+      "document": "dora-ict-risk-management-framework.md",
+      "status": "gap",
+      "decided_by": "decider",
+      "confidence": 0.961,
+      "evidence": [
+        {
+          "section": "Exit from ICT providers",
+          "text": "No exit plan has been written or tested; the team will work one out if a provider ever has to be replaced.",
+          "confidence": 0.949
+        }
+      ],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose and scope",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.927
+        },
+        {
+          "section": "s3",
+          "heading": "Governance and accountability",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.948
+        },
+        {
+          "section": "s4",
+          "heading": "Framework and review",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.953
+        },
+        {
+          "section": "s5",
+          "heading": "ICT asset inventory",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.945
+        },
+        {
+          "section": "s6",
+          "heading": "Incident management and reporting",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.949
+        },
+        {
+          "section": "s7",
+          "heading": "Business continuity and recovery",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.952
+        },
+        {
+          "section": "s8",
+          "heading": "Backups and restoration",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.952
+        },
+        {
+          "section": "s9",
+          "heading": "Third-party ICT risk",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.904
+        },
+        {
+          "section": "s10",
+          "heading": "Resilience testing",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.947
+        },
+        {
+          "section": "s11",
+          "heading": "Exit from ICT providers",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.961
+        },
+        {
+          "section": "s12",
+          "heading": "Change management",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.942
+        }
+      ],
+      "reason": "gap in section 'Exit from ICT providers'",
+      "scope": "document",
+      "suggested_fix": "Develop and document a detailed exit plan for each critical ICT provider, including all necessary steps and resources required. Conduct regular testing of these exit plans to ensure they are effective and can be executed without disruption.",
+      "fix_source": "bedrock",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-01:ict-incident-and-continuity-policy.md",
+      "rule_id": "DORA-01",
+      "rule_title": "Management body owns ICT risk",
+      "severity": "high",
+      "document": "ict-incident-and-continuity-policy.md",
+      "status": "gap",
+      "decided_by": "decider",
+      "confidence": 0.838,
+      "evidence": [
+        {
+          "section": "Governance",
+          "text": "The Head of IT Operations owns this policy and approves changes.",
+          "confidence": 0.439
+        }
+      ],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.917
+        },
+        {
+          "section": "s3",
+          "heading": "Governance",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.838
+        },
+        {
+          "section": "s4",
+          "heading": "Incident classification",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.909
+        },
+        {
+          "section": "s5",
+          "heading": "Reporting",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.862
+        },
+        {
+          "section": "s6",
+          "heading": "Business continuity",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.943
+        },
+        {
+          "section": "s7",
+          "heading": "Backups",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.94
+        },
+        {
+          "section": "s8",
+          "heading": "Third-party providers",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.608
+        }
+      ],
+      "reason": "gap in section 'Governance'",
+      "scope": "document",
+      "suggested_fix": "The management body approves the ICT risk management framework, reviews it at least yearly, and is accountable for it. This includes overseeing all changes and ensuring the framework remains aligned with organizational objectives.",
+      "fix_source": "bedrock",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-02:ict-incident-and-continuity-policy.md",
+      "rule_id": "DORA-02",
+      "rule_title": "Documented ICT risk management framework",
+      "severity": "high",
+      "document": "ict-incident-and-continuity-policy.md",
+      "status": "needs_review",
+      "decided_by": "decider",
+      "confidence": 0.568,
+      "evidence": [
+        {
+          "section": "Governance",
+          "text": "The policy is reviewed when the IT department considers it necessary.",
+          "confidence": 0.777
+        }
+      ],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.589
+        },
+        {
+          "section": "s3",
+          "heading": "Governance",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.568
+        },
+        {
+          "section": "s4",
+          "heading": "Incident classification",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.704
+        },
+        {
+          "section": "s5",
+          "heading": "Reporting",
+          "option": "meets-requirement",
+          "verdict": "compliant",
+          "confidence": 0.515
+        },
+        {
+          "section": "s6",
+          "heading": "Business continuity",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.703
+        },
+        {
+          "section": "s7",
+          "heading": "Backups",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.816
+        },
+        {
+          "section": "s8",
+          "heading": "Third-party providers",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.792
+        }
+      ],
+      "reason": "possible gap in section 'Governance' below the 0.75 confidence threshold",
+      "scope": "document",
+      "suggested_fix": "Establish a documented ICT risk management framework that includes specific strategies, policies, procedures, and tools to protect ICT assets. Commit to reviewing this framework at least once a year and after every major ICT incident.",
+      "fix_source": "bedrock",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-03:ict-incident-and-continuity-policy.md",
+      "rule_id": "DORA-03",
+      "rule_title": "ICT assets identified and classified",
+      "severity": "medium",
+      "document": "ict-incident-and-continuity-policy.md",
+      "status": "not_applicable",
+      "decided_by": "decider",
+      "confidence": 0.949,
+      "evidence": [],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.935
+        },
+        {
+          "section": "s3",
+          "heading": "Governance",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.949
+        },
+        {
+          "section": "s4",
+          "heading": "Incident classification",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.65
+        },
+        {
+          "section": "s5",
+          "heading": "Reporting",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.929
+        },
+        {
+          "section": "s6",
+          "heading": "Business continuity",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.924
+        },
+        {
+          "section": "s7",
+          "heading": "Backups",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.927
+        },
+        {
+          "section": "s8",
+          "heading": "Third-party providers",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.81
+        }
+      ],
+      "reason": "no section discusses this rule",
+      "scope": "document",
+      "suggested_fix": "",
+      "fix_source": "",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-04:ict-incident-and-continuity-policy.md",
+      "rule_id": "DORA-04",
+      "rule_title": "Major ICT incidents classified and reported",
+      "severity": "high",
+      "document": "ict-incident-and-continuity-policy.md",
+      "status": "gap",
+      "decided_by": "decider",
+      "confidence": 0.794,
+      "evidence": [
+        {
+          "section": "Incident classification",
+          "text": "Every ICT incident is logged in the service desk tool and given a priority from P1 to P4 based on the number of affected customers and the duration of the outage.",
+          "confidence": 0.385
+        }
+      ],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.79
+        },
+        {
+          "section": "s3",
+          "heading": "Governance",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.911
+        },
+        {
+          "section": "s4",
+          "heading": "Incident classification",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.794
+        },
+        {
+          "section": "s5",
+          "heading": "Reporting",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.744
+        },
+        {
+          "section": "s6",
+          "heading": "Business continuity",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.93
+        },
+        {
+          "section": "s7",
+          "heading": "Backups",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.942
+        },
+        {
+          "section": "s8",
+          "heading": "Third-party providers",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.914
+        }
+      ],
+      "reason": "gap in section 'Incident classification'",
+      "scope": "document",
+      "suggested_fix": "Implement an incident classification scheme that categorizes incidents into levels such as Critical, High, Medium, and Low. Ensure that all major incidents (Critical and High) are reported to the competent authority with an initial notification within 24 hours, an intermediate report within 72 hours, and a final report within 30 days. This will ensure compliance with the reporting technical standards.",
+      "fix_source": "bedrock",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-05:ict-incident-and-continuity-policy.md",
+      "rule_id": "DORA-05",
+      "rule_title": "ICT business continuity with tested recovery",
+      "severity": "high",
+      "document": "ict-incident-and-continuity-policy.md",
+      "status": "gap",
+      "decided_by": "decider",
+      "confidence": 0.754,
+      "evidence": [
+        {
+          "section": "Business continuity",
+          "text": "The recovery plan was last exercised in 2023.",
+          "confidence": 0.831
+        }
+      ],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.75
+        },
+        {
+          "section": "s3",
+          "heading": "Governance",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.811
+        },
+        {
+          "section": "s4",
+          "heading": "Incident classification",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.749
+        },
+        {
+          "section": "s5",
+          "heading": "Reporting",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.758
+        },
+        {
+          "section": "s6",
+          "heading": "Business continuity",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.754
+        },
+        {
+          "section": "s7",
+          "heading": "Backups",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.596
+        },
+        {
+          "section": "s8",
+          "heading": "Third-party providers",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.805
+        }
+      ],
+      "reason": "gap in section 'Business continuity'",
+      "scope": "document",
+      "suggested_fix": "Define recovery time and recovery point objectives for critical functions, and ensure that the recovery plans are tested at least once a year.",
+      "fix_source": "bedrock",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-06:ict-incident-and-continuity-policy.md",
+      "rule_id": "DORA-06",
+      "rule_title": "Backups and restoration tested",
+      "severity": "medium",
+      "document": "ict-incident-and-continuity-policy.md",
+      "status": "needs_review",
+      "decided_by": "decider",
+      "confidence": 0.671,
+      "evidence": [
+        {
+          "section": "Backups",
+          "text": "Production databases are backed up every night to a separate data centre.",
+          "confidence": 0.121
+        }
+      ],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.907
+        },
+        {
+          "section": "s3",
+          "heading": "Governance",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.948
+        },
+        {
+          "section": "s4",
+          "heading": "Incident classification",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.941
+        },
+        {
+          "section": "s5",
+          "heading": "Reporting",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.932
+        },
+        {
+          "section": "s6",
+          "heading": "Business continuity",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.749
+        },
+        {
+          "section": "s7",
+          "heading": "Backups",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.671
+        },
+        {
+          "section": "s8",
+          "heading": "Third-party providers",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.943
+        }
+      ],
+      "reason": "possible gap in section 'Backups' below the 0.75 confidence threshold",
+      "scope": "document",
+      "suggested_fix": "Define backup policies that specify what is backed up and the frequency based on the criticality of the data. Ensure that backups are stored in a segregated system from the production environment. Implement a periodic testing schedule for restoration from these backups to ensure data integrity and availability.",
+      "fix_source": "bedrock",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-07:ict-incident-and-continuity-policy.md",
+      "rule_id": "DORA-07",
+      "rule_title": "Digital operational resilience testing",
+      "severity": "medium",
+      "document": "ict-incident-and-continuity-policy.md",
+      "status": "not_applicable",
+      "decided_by": "decider",
+      "confidence": 0.941,
+      "evidence": [],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.919
+        },
+        {
+          "section": "s3",
+          "heading": "Governance",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.941
+        },
+        {
+          "section": "s4",
+          "heading": "Incident classification",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.938
+        },
+        {
+          "section": "s5",
+          "heading": "Reporting",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.933
+        },
+        {
+          "section": "s6",
+          "heading": "Business continuity",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.883
+        },
+        {
+          "section": "s7",
+          "heading": "Backups",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.915
+        },
+        {
+          "section": "s8",
+          "heading": "Third-party providers",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.939
+        }
+      ],
+      "reason": "no section discusses this rule",
+      "scope": "document",
+      "suggested_fix": "",
+      "fix_source": "",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-08:ict-incident-and-continuity-policy.md",
+      "rule_id": "DORA-08",
+      "rule_title": "ICT third-party risk and register",
+      "severity": "high",
+      "document": "ict-incident-and-continuity-policy.md",
+      "status": "needs_review",
+      "decided_by": "decider",
+      "confidence": 0.641,
+      "evidence": [
+        {
+          "section": "Third-party providers",
+          "text": "Card processing and cloud hosting are outsourced to external ICT providers.",
+          "confidence": 0.521
+        }
+      ],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.927
+        },
+        {
+          "section": "s3",
+          "heading": "Governance",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.936
+        },
+        {
+          "section": "s4",
+          "heading": "Incident classification",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.928
+        },
+        {
+          "section": "s5",
+          "heading": "Reporting",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.932
+        },
+        {
+          "section": "s6",
+          "heading": "Business continuity",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.925
+        },
+        {
+          "section": "s7",
+          "heading": "Backups",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.916
+        },
+        {
+          "section": "s8",
+          "heading": "Third-party providers",
+          "option": "falls-short",
+          "verdict": "gap",
+          "confidence": 0.641
+        }
+      ],
+      "reason": "possible gap in section 'Third-party providers' below the 0.75 confidence threshold",
+      "scope": "document",
+      "suggested_fix": "<thinking>The problem is that the architecture does not have an ICT third-party risk policy and does not maintain a register of information on all contractual arrangements with ICT third-party service providers. To address this, I need to propose a fix that includes adopting a policy and maintaining a register as per the rule.</thinking>",
+      "fix_source": "bedrock",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    },
+    {
+      "id": "DORA-09:ict-incident-and-continuity-policy.md",
+      "rule_id": "DORA-09",
+      "rule_title": "Exit strategies for critical ICT providers",
+      "severity": "medium",
+      "document": "ict-incident-and-continuity-policy.md",
+      "status": "not_applicable",
+      "decided_by": "decider",
+      "confidence": 0.956,
+      "evidence": [],
+      "sections": [
+        {
+          "section": "s2",
+          "heading": "Purpose",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.939
+        },
+        {
+          "section": "s3",
+          "heading": "Governance",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.95
+        },
+        {
+          "section": "s4",
+          "heading": "Incident classification",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.956
+        },
+        {
+          "section": "s5",
+          "heading": "Reporting",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.949
+        },
+        {
+          "section": "s6",
+          "heading": "Business continuity",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.95
+        },
+        {
+          "section": "s7",
+          "heading": "Backups",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.955
+        },
+        {
+          "section": "s8",
+          "heading": "Third-party providers",
+          "option": "not-discussed",
+          "verdict": "not_applicable",
+          "confidence": 0.877
+        }
+      ],
+      "reason": "no section discusses this rule",
+      "scope": "document",
+      "suggested_fix": "",
+      "fix_source": "",
+      "human_decision": "pending",
+      "documents": [],
+      "rule_source": {
+        "scope": "organization",
+        "pack": "dora",
+        "overrides": null
+      }
+    }
+  ]
+}

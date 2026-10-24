@@ -1,0 +1,223 @@
+pack: effective
+version: dora@0.1
+title: Acme Bank (demo) / DORA compliance
+description: 'Combined from: dora'
+rules:
+- id: DORA-01
+  title: Management body owns ICT risk
+  severity: high
+  applies_to:
+  - adr
+  requirement: The management body defines, approves and oversees the ICT risk management framework and
+    bears final responsibility for it (Art. 5).
+  decider:
+    topic: who approves, owns or oversees ICT risk management
+    question: 'How does this text handle: management body owns ict risk?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: the management body or board approves and oversees the ICT risk framework and is
+          accountable for it
+      falls-short:
+        verdict: gap
+        description: ICT risk ownership sits only with IT staff, or no approval or oversight by the management
+          body is described
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: State that the management body approves the ICT risk management framework, reviews it at least
+    yearly and is accountable for it.
+- id: DORA-02
+  title: Documented ICT risk management framework
+  severity: high
+  applies_to:
+  - adr
+  requirement: A documented ICT risk management framework covers strategies, policies, procedures and
+    tools to protect ICT assets, and is reviewed at least once a year and after major incidents (Art.
+    6).
+  decider:
+    topic: the ICT risk management framework, its scope and how often it is reviewed
+    question: 'How does this text handle: documented ict risk management framework?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: a documented framework exists and is reviewed at least yearly and after major ICT
+          incidents
+      falls-short:
+        verdict: gap
+        description: no framework is described, or it is never reviewed, or reviews happen less than yearly
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Describe the ICT risk management framework and commit to a review at least once a year and
+    after every major ICT incident.
+- id: DORA-03
+  title: ICT assets identified and classified
+  severity: medium
+  applies_to:
+  - adr
+  requirement: All ICT-supported business functions, information assets and ICT assets, and their dependencies,
+    are identified, classified and kept up to date (Art. 8).
+  decider:
+    topic: an inventory or classification of ICT assets, systems or business functions
+    question: 'How does this text handle: ict assets identified and classified?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: ICT assets and business functions are inventoried, classified by criticality and
+          kept current
+      falls-short:
+        verdict: gap
+        description: assets are not inventoried or classified, or the inventory is not maintained
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Keep an inventory of ICT assets and supported business functions, classify them by criticality
+    and update it on every change.
+- id: DORA-04
+  title: Major ICT incidents classified and reported
+  severity: high
+  applies_to:
+  - adr
+  requirement: ICT-related incidents are recorded and classified; major incidents are reported to the
+    competent authority with an initial notification, an intermediate report and a final report within
+    the deadlines of the reporting technical standards (Art. 17-19).
+  decider:
+    topic: how ICT incidents are classified, escalated and reported to the regulator
+    question: 'How does this text handle: major ict incidents classified and reported?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: incidents are classified and major ones are reported to the competent authority with
+          initial, intermediate and final reports on defined deadlines
+      falls-short:
+        verdict: gap
+        description: there is no classification of incidents, no regulator reporting, or no reporting
+          deadlines
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Add an incident classification scheme and a procedure to send initial, intermediate and final
+    reports of major ICT incidents to the competent authority on the regulatory deadlines.
+- id: DORA-05
+  title: ICT business continuity with tested recovery
+  severity: high
+  applies_to:
+  - adr
+  requirement: An ICT business continuity policy with response and recovery plans exists, sets recovery
+    objectives, and the plans are tested regularly (Art. 11).
+  decider:
+    topic: business continuity, disaster recovery, recovery time or recovery point objectives
+    question: 'How does this text handle: ict business continuity with tested recovery?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: continuity and recovery plans exist with recovery objectives and are tested regularly
+      falls-short:
+        verdict: gap
+        description: no continuity or recovery plan, no recovery objectives, or plans are never tested
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Define recovery time and recovery point objectives for critical functions and test the recovery
+    plans at least yearly.
+- id: DORA-06
+  title: Backups and restoration tested
+  severity: medium
+  applies_to:
+  - adr
+  requirement: Backup policies define scope and frequency based on criticality, and restoration from backups
+    is tested periodically, using systems segregated from the source (Art. 12).
+  decider:
+    topic: backups, backup frequency, restoring from backups
+    question: 'How does this text handle: backups and restoration tested?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: backup scope and frequency are defined and restores are tested periodically
+      falls-short:
+        verdict: gap
+        description: backups are not described, or restores are never tested
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Define what is backed up and how often per criticality, keep backups segregated, and test
+    restores on a fixed schedule.
+- id: DORA-07
+  title: Digital operational resilience testing
+  severity: medium
+  applies_to:
+  - adr
+  requirement: A risk-based digital operational resilience testing programme is run, with critical systems
+    tested at least yearly; significant entities also perform threat-led penetration testing at least
+    every three years (Art. 24-26).
+  decider:
+    topic: resilience testing, vulnerability assessments, penetration testing or threat-led testing
+    question: 'How does this text handle: digital operational resilience testing?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: a testing programme exists with at least yearly tests of critical systems (and threat-led
+          testing where required)
+      falls-short:
+        verdict: gap
+        description: no testing programme is described, or critical systems are not tested at least yearly
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Set up a yearly testing programme for critical ICT systems and plan threat-led penetration
+    testing every three years if the entity is significant.
+- id: DORA-08
+  title: ICT third-party risk and register
+  severity: high
+  applies_to:
+  - adr
+  requirement: ICT third-party risk is managed under a strategy and policy; a register of information
+    on all contractual arrangements with ICT third-party service providers is maintained (Art. 28).
+  decider:
+    topic: ICT third-party or outsourcing providers, supplier contracts or a register of ICT arrangements
+    question: 'How does this text handle: ict third-party risk and register?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: third-party ICT risk is managed and a register of all ICT contractual arrangements
+          is kept
+      falls-short:
+        verdict: gap
+        description: ICT providers are used without a third-party risk policy or without a register of
+          arrangements
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Adopt an ICT third-party risk policy and keep a register of information covering every ICT
+    service contract.
+- id: DORA-09
+  title: Exit strategies for critical ICT providers
+  severity: medium
+  applies_to:
+  - adr
+  requirement: For ICT services that support critical or important functions, documented and tested exit
+    strategies exist so the entity can leave a provider without disruption (Art. 28(8)).
+  decider:
+    topic: leaving, replacing or exiting an ICT provider
+    question: 'How does this text handle: exit strategies for critical ict providers?'
+    scope: document
+    options:
+      meets-requirement:
+        verdict: compliant
+        description: documented exit strategies and transition plans exist for critical ICT providers
+      falls-short:
+        verdict: gap
+        description: critical ICT providers have no exit or transition plan
+      not-discussed:
+        verdict: not_applicable
+        description: the text does not discuss this topic
+  fix_hint: Write and test an exit plan for each ICT provider that supports a critical or important function.
