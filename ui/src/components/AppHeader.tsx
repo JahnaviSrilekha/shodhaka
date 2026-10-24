@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
+import { DEMO } from "../api/demo";
 import type { Health, Org, Project } from "../api/types";
 import { navigate, type Route } from "../hooks/useHashRoute";
 import { Icon } from "./Icon";
@@ -61,7 +62,7 @@ export function AppHeader({ health, route }: { health: Health | null; route: Rou
       <div className="header-status">
         <span className="privacy"><Icon name="shield" size={14} /> Full documents stay on this machine</span>
         <span className={`dot-status ${health?.decider === "up" ? "up" : "down"}`} title={health?.error ?? health?.checkpoint ?? ""}>
-          Decider {health ? (health.decider === "up" ? "ready" : "offline") : "…"}
+          Decider {DEMO ? "2B · recorded run" : health ? (health.decider === "up" ? "ready" : "offline") : "…"}
         </span>
       </div>
     </header>

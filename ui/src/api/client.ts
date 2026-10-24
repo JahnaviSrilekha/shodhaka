@@ -5,6 +5,9 @@ import type {
   AnalysisMode, Analysis, Candidate, Recommendation, AnalysisListItem, AnalysisMeta, DocumentText, Health, Org, OrgDetail, PackDocument, PackInput,
   PackSummary, Project, ProjectDetail, Review, ReviewInput, ValidateResult,
 } from "./types";
+import { DEMO, DEMO_API, DemoRefused, demoRequest } from "./demo";
+
+const EXPORT_ROOT = DEMO ? DEMO_API : "/api";
 
 export class ApiError extends Error {
   constructor(public status: number, message: string, public detail?: unknown) {
@@ -16,6 +19,13 @@ export interface Scope { org: string; project: string }
 export interface PackScope { org: string; project: string | null }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  if (DEMO) {
+    try {
+      return await demoRequest<T>(path, init);
+    } catch (e) {
+      throw e instanceof DemoRefused ? new ApiError(405, e.message) : e;
+    }
+  }
   const response = await fetch(`/api${path}`, init);
   if (!response.ok) {
     let detail: unknown;
@@ -104,9 +114,9 @@ export const api = {
     request<AnalysisMeta>(`${projectBase(s)}/analyses/${id}/documents/${enc(path)}/recheck`, { method: "POST" }),
 
   exportUrl: {
-    expected: (s: Scope, id: string) => `/api${projectBase(s)}/analyses/${id}/export/expected.json`,
-    report: (s: Scope, id: string) => `/api${projectBase(s)}/analyses/${id}/export/report.json`,
-    rules: (s: Scope, id: string) => `/api${projectBase(s)}/analyses/${id}/export/rules.yaml`,
-    document: (s: Scope, id: string, path: string) => `/api${projectBase(s)}/analyses/${id}/export/document/${enc(path)}`,
+    expected: (s: Scope, id: string) => `${EXPORT_ROOT}${projectBase(s)}/analyses/${id}/export/expected.json`,
+    report: (s: Scope, id: string) => `${EXPORT_ROOT}${projectBase(s)}/analyses/${id}/export/report.json`,
+    rules: (s: Scope, id: string) => `${EXPORT_ROOT}${projectBase(s)}/analyses/${id}/export/rules.yaml`,
+    document: (s: Scope, id: string, path: string) => `${EXPORT_ROOT}${projectBase(s)}/analyses/${id}/export/document/${enc(path)}`,
   },
 };

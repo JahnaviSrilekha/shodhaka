@@ -1,0 +1,18 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: billing-service
+  datasource:
+    url: jdbc:postgresql://REMOVED_PERSONAL_DATA:5432/billing
+    username: billing_app
+    password: REMOVED_SECRET
+tax:
+  client:
+    base-url: https://tax.example-provider.com
+    api-key: REMOVED_SECRET
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info

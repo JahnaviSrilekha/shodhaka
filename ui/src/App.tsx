@@ -1,3 +1,4 @@
+import { DEMO } from "./api/demo";
 import { AppHeader, useHealth } from "./components/AppHeader";
 import { AnalysisPage } from "./features/analysis/AnalysisPage";
 import { DocumentPage } from "./features/editor/DocumentPage";
@@ -16,6 +17,13 @@ export function App() {
   const key = JSON.stringify(route);
   return (
     <ToastProvider>
+      {DEMO && (
+        <div className="demo-banner" role="note">
+          <strong>Recorded demo.</strong> Real results from a local run with Strands Decider 2B on 24 October 2026.
+          You can browse, filter and approve, but nothing is uploaded or analysed here.{" "}
+          <a href="https://github.com/JahnaviSrilekha/shodhaka" target="_blank" rel="noreferrer">Run it yourself</a>
+        </div>
+      )}
       <AppHeader health={health} route={route} />
       {route.page === "home" && <OrgsPage />}
       {route.page === "org" && <OrgPage key={key} org={route.org} />}
