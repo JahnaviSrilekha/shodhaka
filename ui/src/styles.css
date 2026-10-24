@@ -78,10 +78,6 @@ kbd {
   position: sticky; top: 0; z-index: 5;
 }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 650; color: var(--text); text-decoration: none; }
-.brand-mark {
-  display: grid; place-items: center; width: 26px; height: 26px; border-radius: 7px;
-  background: var(--primary); color: var(--primary-ink);
-}
 .header-status { display: flex; align-items: center; gap: 16px; font-size: 13px; color: var(--muted); }
 .privacy { display: inline-flex; align-items: center; gap: 6px; }
 .dot-status { display: inline-flex; align-items: center; gap: 6px; }

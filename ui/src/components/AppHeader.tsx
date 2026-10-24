@@ -3,6 +3,7 @@ import { api } from "../api/client";
 import type { Health, Org, Project } from "../api/types";
 import { navigate, type Route } from "../hooks/useHashRoute";
 import { Icon } from "./Icon";
+import { LogoMark } from "./LogoMark";
 
 export function useHealth() {
   const [health, setHealth] = useState<Health | null>(null);
@@ -33,7 +34,7 @@ export function AppHeader({ health, route }: { health: Health | null; route: Rou
     <header className="app-header">
       <div className="header-left">
         <a href="#/" className="brand">
-          <span className="brand-mark"><Icon name="check" size={14} /></span>
+          <LogoMark size={28} />
           <span className="brand-name">Shodhaka</span>
         </a>
         {orgs.length > 0 && (

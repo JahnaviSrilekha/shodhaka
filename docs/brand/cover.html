@@ -1,0 +1,48 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>
+* { box-sizing: border-box; margin: 0; }
+body { width: 1600px; height: 900px; background: #f6f7f5; font-family: Inter, -apple-system, "Segoe UI", Helvetica, sans-serif; color: #1c2420; }
+.wrap { display: grid; grid-template-columns: 1fr 700px; gap: 64px; align-items: center; height: 100%; padding: 0 96px; }
+.brand { display: flex; align-items: center; gap: 22px; }
+.brand h1 { font-size: 76px; font-weight: 700; letter-spacing: -1.5px; }
+.tag { margin-top: 30px; font-size: 38px; line-height: 1.25; font-weight: 600; letter-spacing: -0.4px; }
+.sub { margin-top: 18px; font-size: 24px; line-height: 1.45; color: #5f6b65; }
+.pills { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; }
+.pill { font-size: 20px; font-weight: 600; padding: 9px 16px; border-radius: 999px; background: #e3efea; color: #245b4e; }
+.card { background: #fff; border: 1px solid #dfe3de; border-radius: 22px; padding: 38px 40px; display: grid; gap: 22px;
+  box-shadow: 0 2px 6px rgb(16 24 20 / 6%), 0 24px 60px rgb(16 24 20 / 10%); }
+.meta { display: flex; align-items: center; gap: 14px; font-size: 19px; color: #5f6b65; }
+.badge { font-size: 19px; font-weight: 700; padding: 4px 14px; border-radius: 999px; background: #fdecea; color: #b42318; }
+.sev { font-weight: 700; letter-spacing: .06em; color: #b42318; font-size: 16px; }
+.title { font-size: 31px; font-weight: 650; line-height: 1.2; }
+.title code { font-family: ui-monospace, Menlo, monospace; font-size: 27px; margin-right: 8px; }
+.conf { display: flex; align-items: center; gap: 16px; font-size: 19px; color: #5f6b65; }
+.track { position: relative; width: 300px; height: 10px; border-radius: 5px; background: #f0f2ef; }
+.fill { position: absolute; inset: 0 auto 0 0; width: 96%; border-radius: 5px; background: #245b4e; }
+.gate { position: absolute; left: 75%; top: -5px; bottom: -5px; width: 3px; background: #1c2420; opacity: .55; }
+.conf b { color: #1c2420; font-size: 22px; }
+.ev { border-left: 5px solid #b42318; background: #f0f2ef; border-radius: 0 12px 12px 0; padding: 18px 22px; font-size: 22px; line-height: 1.45; }
+.ev small { display: block; font-size: 16px; color: #5f6b65; margin-bottom: 6px; }
+.fix { background: #f0f2ef; border-radius: 14px; padding: 18px 22px; font-size: 19px; line-height: 1.45; color: #3a4440; }
+.fix strong { color: #1c2420; }
+.foot { display: flex; justify-content: space-between; align-items: center; font-size: 18px; color: #5f6b65; }
+.approve { background: #245b4e; color: #fff; font-weight: 650; padding: 10px 20px; border-radius: 10px; font-size: 19px; }
+</style></head><body><div class="wrap">
+<div>
+  <div class="brand">
+    <svg width="96" height="96" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#245b4e"/><circle cx="28" cy="28" r="14" fill="none" stroke="#fff" stroke-width="4.5"/><path d="M38.5 38.5 L49 49" stroke="#fff" stroke-width="5.5" stroke-linecap="round"/><path d="M21.5 28.5 l4.5 4.5 l8.5-10" fill="none" stroke="#9fe1cb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <h1>Shodhaka</h1>
+  </div>
+  <p class="tag">Check design docs and policies against any rulebook, with proof for every gap.</p>
+  <p class="sub">Strands Decider 2B makes every rule decision on your machine. Bedrock drafts the fix. A person signs off.</p>
+  <div class="pills"><span class="pill">Decider 2B · local · $0</span><span class="pill">DORA · ISO 27001 · architecture</span><span class="pill">Confidence gate</span></div>
+</div>
+<div class="card">
+  <div class="meta"><span class="badge">Gap</span><span class="sev" style="color:#5f6b65">MEDIUM</span><span>DORA · dora-ict-risk-management-framework.md</span></div>
+  <div class="title"><code>DORA-09</code>Exit strategies for critical ICT providers</div>
+  <div class="conf">Confidence <span class="track"><span class="fill"></span><span class="gate"></span></span><b>96%</b><span>gate 75%</span></div>
+  <div class="ev"><small>Evidence · Exit from ICT providers</small>“No exit plan has been written or tested; the team will work one out if a provider ever has to be replaced.”</div>
+  <div class="fix"><strong>Suggested fix</strong> · Nova Lite on Bedrock, from a redacted snippet<br>Document an exit plan for each critical ICT provider and test it regularly.</div>
+  <div class="foot"><span>Decided by Strands Decider 2B, locally</span><span class="approve">✓ Approve</span></div>
+</div>
+</div></body></html>
